@@ -1,16 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f5f0;
-  --foreground: #171714;
-  --muted: #6f6d64;
-  --line: rgba(23, 23, 20, 0.1);
-  --line-strong: rgba(23, 23, 20, 0.18);
-  --panel: rgba(255, 255, 252, 0.78);
-  --panel-solid: #fffefa;
-  --accent: #2f6b57;
-  --accent-dark: #194939;
-  --clay: #b7795f;
+  --background: #f7efe0;
+  --foreground: #211b16;
+  --muted: #6b5f51;
+  --accent: #2f7058;
 }
 
 * {
@@ -27,20 +21,17 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
   color: var(--foreground);
-  background:
-    radial-gradient(circle at 14% 12%, rgba(47, 107, 87, 0.18), transparent 28rem),
-    radial-gradient(circle at 88% 8%, rgba(183, 121, 95, 0.18), transparent 26rem),
-    linear-gradient(180deg, #fbfaf5 0%, var(--background) 44%, #efede4 100%);
-  font-family: var(--font-geist-sans), sans-serif;
+  background: var(--background);
+  font-family: var(--font-display), sans-serif;
 }
 
 body::after {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 50;
   pointer-events: none;
   content: "";
-  opacity: 0.035;
+  opacity: 0.028;
   background-image:
     linear-gradient(rgba(23, 23, 20, 0.7) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23, 23, 20, 0.7) 1px, transparent 1px);
@@ -90,6 +81,33 @@ body::after {
 
 .mobile-safe {
   max-width: calc(100vw - 2rem);
+}
+
+.site-nav-links,
+.site-nav-actions {
+  display: none;
+}
+
+section {
+  position: relative;
+}
+
+p,
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 1024px) {
+  .mobile-safe {
+    max-width: none;
+  }
+
+  .site-nav-links,
+  .site-nav-actions {
+    display: flex;
+  }
 }
 
 @keyframes pulse-dot {
