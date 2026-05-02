@@ -37,7 +37,6 @@ import {
   ArrowSquareOut as ExternalIcon
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView, useMotionValueEvent } from 'motion/react';
-import HeatMap from '@uiw/react-heat-map';
 
 // --- Data ---
 
@@ -143,26 +142,6 @@ const codolioStats = {
   globalRank: 8487
 };
 
-// Generate dummy heatmap data for the last 6 months
-const generateHeatmapData = () => {
-  const data = [];
-  const end = new Date();
-  const start = new Date();
-  start.setMonth(start.getMonth() - 6);
-  
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    if (Math.random() > 0.3) {
-      data.push({
-        date: d.toISOString().split('T')[0],
-        count: Math.floor(Math.random() * 5) + 1
-      });
-    }
-  }
-  return data;
-};
-
-const heatmapData = generateHeatmapData();
-
 // --- Components ---
 
 const ThemeToggle = ({ darkMode, toggle }) => (
@@ -251,7 +230,7 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
             >
               <Terminal size={24} />
             </button>
-            <a href="/Kunal_Rai_Resume.pdf" download className="bg-primary text-white font-mono text-[11px] tracking-widest uppercase px-6 py-2.5 hover:bg-primary-dark transition-all active:scale-95 hidden sm:flex items-center gap-2">
+            <a href="/kunal_rai_resume.pdf" download className="bg-primary text-white font-mono text-[11px] tracking-widest uppercase px-6 py-2.5 hover:bg-primary-dark transition-all active:scale-95 hidden sm:flex items-center gap-2">
               Resume <Download size={14} />
             </a>
           </div>
@@ -265,14 +244,14 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center p-6 lg:hidden"
+            className="fixed inset-0 z-[100] bg-background/60 backdrop-blur-xl flex flex-col items-center justify-center p-6 lg:hidden"
           >
             <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-md space-y-12 relative z-10 bg-background/95 p-8 border border-grid-line shadow-2xl"
+              className="w-full max-w-md space-y-12 relative z-10 glass-panel p-8 border border-grid-line shadow-2xl rounded-sm"
             >
               <button 
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -604,7 +583,10 @@ const Projects = () => {
   );
 };
 
-const Codolio = () => {
+const Codolio = ({ darkMode }) => {
+  const profileCard = darkMode ? "/profileCard dark.png" : "/profileCard.png";
+  const devCard = darkMode ? "/devCard dark.png" : "/devCard.png";
+
   return (
     <section id="codolio" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto overflow-hidden">
       <SectionHeader title="Codolio Analytics" id="codolio" subtitle="/ PROFILE_AGGREGATION" />
@@ -690,36 +672,27 @@ const Codolio = () => {
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="lg:col-span-7 space-y-6"
+          className="lg:col-span-7 space-y-8"
         >
-          <div className="font-mono text-xs uppercase tracking-widest text-foreground/40 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            Live_Activity_Heatmap
-          </div>
-          <div className="border border-grid-line p-4 md:p-8 overflow-x-auto bg-background/30 backdrop-blur-sm">
-             <HeatMap
-              value={heatmapData}
-              width={680}
-              height={180}
-              startDate={new Date(new Date().setMonth(new Date().getMonth() - 6))}
-              endDate={new Date()}
-              space={3}
-              rectSize={12}
-              legendCellSize={0}
-              panelColors={{
-                0: '#1a1a1a',
-                2: '#FF4F0033',
-                4: '#FF4F0066',
-                10: '#FF4F00aa',
-                20: '#FF4F00',
-              }}
-              rectProps={{
-                rx: 2
-              }}
-            />
-            <div className="flex justify-between mt-4 font-mono text-[8px] text-foreground/40 uppercase">
-              <span>Less_Activity</span>
-              <span>More_Activity</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="space-y-6">
+              <div className="font-mono text-xs uppercase tracking-widest text-foreground/40 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                Dev_Card
+              </div>
+              <div className="border border-grid-line p-1 bg-background/30 backdrop-blur-sm shadow-xl hover:border-primary/30 transition-colors">
+                <img src={devCard} alt="Developer Card" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500" />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="font-mono text-xs uppercase tracking-widest text-foreground/40 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                Profile_Card
+              </div>
+              <div className="border border-grid-line p-1 bg-background/30 backdrop-blur-sm shadow-xl hover:border-primary/30 transition-colors">
+                <img src={profileCard} alt="Profile Card" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500" />
+              </div>
             </div>
           </div>
           
@@ -974,7 +947,7 @@ export default function PortfolioExperience() {
         <Hero />
         <Stats />
         <Projects />
-        <Codolio />
+        <Codolio darkMode={darkMode} />
         <SkillsMarquee />
         <Education />
         <Posts />

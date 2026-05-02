@@ -15,6 +15,9 @@ export const metadata = {
   title: "Kunal Rai | Full-Stack Systems Engineer",
   description:
     "Portfolio of Kunal Rai, specializing in real-time systems, AI-driven tools, and precision-engineered user interfaces.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
