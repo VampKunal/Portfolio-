@@ -825,81 +825,141 @@ const Posts = () => {
   );
 };
 
-const Contact = () => (
-  <section id="contact" className="px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
-    <SectionHeader title="Initiate Contact" id="contact" subtitle="/ COMMS_MODULE" />
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        className="lg:col-span-5 space-y-8"
-      >
-        <h3 className="font-sans font-black text-4xl uppercase tracking-tighter">Ready for the <br /><span className="text-primary">next sequence?</span></h3>
-        <p className="text-foreground/70 text-lg leading-relaxed">
-          I'm currently available for full-stack engineering roles, technical consultation, or algorithmic research collaborations.
-        </p>
+const Contact = () => {
+  const [status, setStatus] = useState("idle");
 
-        <div className="space-y-4 pt-4">
-          <a href="mailto:kunalrai.work@gmail.com" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
-              <Mail size={20} className="text-foreground/40 group-hover:text-primary" />
-            </div>
-            <div>
-              <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Email_Primary</div>
-              <div className="font-sans font-bold">kunalrai72899@gamil.com</div>
-            </div>
-          </a>
-          <div className="flex items-center gap-4 group">
-            <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
-              <Database size={20} className="text-foreground/40 group-hover:text-primary" />
-            </div>
-            <div>
-              <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Location_Node</div>
-              <div className="font-sans font-bold">Delhi, IN / Remote</div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    const formData = new FormData(e.target);
+
+    formData.append("access_key", "3602fd87-d35e-4069-b5dd-7c5b9789b84b");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus("success");
+        e.target.reset();
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <section id="contact" className="px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
+      <SectionHeader title="Initiate Contact" id="contact" subtitle="/ COMMS_MODULE" />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <h3 className="font-sans font-black text-4xl uppercase tracking-tighter">Ready for the <br /><span className="text-primary">next sequence?</span></h3>
+          <p className="text-foreground/70 text-lg leading-relaxed">
+            I'm currently available for full-stack engineering roles, technical consultation, or algorithmic research collaborations.
+          </p>
+
+          <div className="space-y-4 pt-4">
+            <a href="mailto:kunalrai.work@gmail.com" className="flex items-center gap-4 group">
+              <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
+                <Mail size={20} className="text-foreground/40 group-hover:text-primary" />
+              </div>
+              <div>
+                <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Email_Primary</div>
+                <div className="font-sans font-bold">kunalrai72899@gmail.com</div>
+              </div>
+            </a>
+            <div className="flex items-center gap-4 group">
+              <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
+                <Database size={20} className="text-foreground/40 group-hover:text-primary" />
+              </div>
+              <div>
+                <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Location_Node</div>
+                <div className="font-sans font-bold">Delhi, IN / Remote</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex gap-6 pt-8">
-          <a href="https://github.com/VampKunal" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
-            <GithubIcon size={20} />
-          </a>
-          <a href="https://in.linkedin.com/in/kunal-rai-104347259" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
-            <LinkedinIcon size={20} />
-          </a>
-        </div>
-      </motion.div>
+          <div className="flex gap-6 pt-8">
+            <a href="https://github.com/VampKunal" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
+              <GithubIcon size={20} />
+            </a>
+            <a href="https://in.linkedin.com/in/kunal-rai-104347259" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
+              <LinkedinIcon size={20} />
+            </a>
+          </div>
+        </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        className="lg:col-span-7 bg-background border border-grid-line p-8 md:p-12 glass-panel"
-      >
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-7 bg-background border border-grid-line p-8 md:p-12 glass-panel"
+        >
+          <form className="space-y-8" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
+                <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Sender_Identity</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="John_Doe"
+                  className="w-full bg-transparent p-2 outline-none font-sans font-bold"
+                />
+              </div>
+              <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
+                <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Return_Protocol</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="john@domain.com"
+                  className="w-full bg-transparent p-2 outline-none font-sans font-bold"
+                />
+              </div>
+            </div>
             <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
-              <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Sender_Identity</label>
-              <input type="text" placeholder="John_Doe" className="w-full bg-transparent p-2 outline-none font-sans font-bold" />
+              <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Payload_Data</label>
+              <textarea
+                rows={4}
+                name="message"
+                required
+                placeholder="Establishing connection request..."
+                className="w-full bg-transparent p-2 outline-none font-sans font-bold resize-none"
+              ></textarea>
             </div>
-            <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
-              <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Return_Protocol</label>
-              <input type="email" placeholder="john@domain.com" className="w-full bg-transparent p-2 outline-none font-sans font-bold" />
-            </div>
-          </div>
-          <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
-            <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Payload_Data</label>
-            <textarea rows={4} placeholder="Establishing connection request..." className="w-full bg-transparent p-2 outline-none font-sans font-bold resize-none"></textarea>
-          </div>
-          <button className="w-full bg-primary text-white py-6 font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-dark transition-all active:scale-95 shadow-brutal">
-            Transmit Signal <Send size={16} />
-          </button>
-        </form>
-      </motion.div>
-    </div>
-  </section>
-);
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className={`w-full ${status === "success" ? "bg-green-600" : status === "error" ? "bg-red-600" : "bg-primary"} text-white py-6 font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-95 shadow-brutal disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {status === "sending" ? "Transmitting Signal..." : status === "success" ? "Signal Received" : status === "error" ? "Transmission Failed" : "Transmit Signal"}
+              <Send size={16} className={status === "sending" ? "animate-pulse" : ""} />
+            </button>
+            {status === "success" && (
+              <p className="font-mono text-[10px] text-green-600 uppercase tracking-widest text-center animate-bounce">
+                Connection established. Check your console for confirmation.
+              </p>
+            )}
+          </form>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 const Footer = () => (
   <footer className="w-full border-t border-grid-line bg-background relative z-10">
