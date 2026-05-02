@@ -1,575 +1,987 @@
 "use client";
 
-import {
-  ArrowSquareOut,
-  Brain,
-  Cpu,
+import { useState, useEffect, useRef } from 'react';
+import { 
+  Moon, 
+  Sun, 
+  ArrowRight, 
+  Code2, 
+  ExternalLink, 
+  Github, 
+  Linkedin, 
+  Download, 
+  ChevronRight,
   Database,
-  GithubLogo,
+  Cpu,
   Globe,
-  GraduationCap,
-  LinkedinLogo,
+  Mail,
+  Send,
+  Terminal,
+  Layers,
+  Plus,
   Monitor,
   Network,
-  Sparkle,
-  Terminal,
+  Brain,
+  MessageSquare,
+  Video,
+  Smartphone,
+  Zap,
+  TrendingUp,
+  Activity,
+  CheckCircle2,
+  Calendar
+} from 'lucide-react';
+import { 
+  GithubLogo as GithubIcon, 
+  LinkedinLogo as LinkedinIcon,
+  ArrowSquareOut as ExternalIcon
 } from "@phosphor-icons/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
-import ButtonLink from "@/components/ButtonLink";
-import SiteNav from "@/components/SiteNav";
-import SectionHeading from "@/components/SectionHeading";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView, useMotionValueEvent } from 'motion/react';
+import HeatMap from '@uiw/react-heat-map';
+
+// --- Data ---
 
 const projects = [
   {
-    title: "IDEAROOM",
-    type: "REAL-TIME WHITEBOARD",
-    stack: ["Next.js", "Socket.IO", "Redis", "RabbitMQ"],
-    metric: "sub-100ms",
-    href: "https://github.com/VampKunal/IdeaRoom",
-    live: "https://idea-room-ashy.vercel.app",
-    image: "/idearoom-mock.svg",
-    copy: "Live canvas sync, resilient services, and queue-backed snapshots.",
+    title: "PROJECT_ALPHA",
+    category: "System Module // 01",
+    desc: "A high-performance system architecture designed for real-time data processing and sub-millisecond latency.",
+    metric: "sub-1ms",
+    image: "/image.png",
+    href: "#",
+    live: "#",
+    stack: ["Next.js", "Socket.IO", "Redis"]
   },
   {
-    title: "EKLAVYA",
-    type: "AI VOICE TUTOR",
-    stack: ["Next.js", "TypeScript", "OpenAI API", "Speech API"],
-    metric: "voice-first",
-    href: "https://github.com/VampKunal/EKLAVYA",
-    live: "",
-    image: "/eklavya-mock.svg",
-    copy: "Speak, listen, quiz, and generate practice from one learning loop.",
+    title: "PROJECT_BETA",
+    category: "AI Neural Net // 02",
+    desc: "Autonomous agent system capable of processing natural language and executing complex task sequences.",
+    metric: "v2.0-core",
+    image: "/image.png",
+    href: "#",
+    stack: ["TypeScript", "OpenAI API", "Node.js"]
   },
   {
-    title: "VIBLY",
-    type: "CHAT AND VIDEO",
-    stack: ["React", "Node.js", "MongoDB", "Stream APIs"],
-    metric: "HD calls",
-    href: "https://github.com/VampKunal/VIBLY",
-    live: "",
-    image: "/vibly-mock.svg",
-    copy: "Messaging, video, presence, friend flows, and polished client state.",
+    title: "PROJECT_GAMMA",
+    category: "Cloud Mesh // 03",
+    desc: "Distributed infrastructure with self-healing nodes and automated load balancing for global scaling.",
+    metric: "99.9% Up",
+    image: "/image.png",
+    href: "#",
+    stack: ["Docker", "Kubernetes", "AWS"]
   },
   {
-    title: "SYNC LAYER",
-    type: "SYSTEM MODULE",
-    stack: ["Socket.IO", "Latency", "Events", "Canvas"],
-    metric: "realtime",
-    href: "https://github.com/VampKunal/IdeaRoom",
-    live: "",
-    image: "/idearoom-mock.svg",
-    copy: "Event architecture for fast shared-state collaboration.",
+    title: "PROJECT_DELTA",
+    category: "Edge Node // 04",
+    desc: "Ultra-low power compute node designed for IoT clusters and remote sensor data aggregation.",
+    metric: "IoT-opt",
+    image: "/image.png",
+    href: "#",
+    stack: ["C++", "Python", "MQTT"]
   },
   {
-    title: "AI LOOP",
-    type: "LEARNING MODULE",
-    stack: ["Prompts", "Voice", "Quiz", "Feedback"],
-    metric: "adaptive",
-    href: "https://github.com/VampKunal/EKLAVYA",
-    live: "",
-    image: "/eklavya-mock.svg",
-    copy: "Voice interaction flow shaped around learning feedback.",
-  },
-  {
-    title: "SOCIAL CORE",
-    type: "PRODUCT MODULE",
-    stack: ["Presence", "Calls", "Themes", "State"],
-    metric: "polished",
-    href: "https://github.com/VampKunal/VIBLY",
-    live: "",
-    image: "/vibly-mock.svg",
-    copy: "Communication primitives with clean product behavior.",
-  },
+    title: "PROJECT_EPSILON",
+    category: "Secure Core // 05",
+    desc: "Cryptographic security layer for sensitive data protection and decentralized identity verification.",
+    metric: "AES-256",
+    image: "/image.png",
+    href: "#",
+    stack: ["Go", "Solidity", "Hardhat"]
+  }
 ];
 
 const education = [
   {
-    title: "Class 10",
-    place: "Vivekanand International Senior Secondary School",
-    note: "Built the academic base: math, science, and disciplined study.",
+    degree: "B.Tech Computer Science",
+    institution: "Bennett University",
+    description: "Focusing on full-stack engineering and real-time systems.",
+    year: "2023 - 2027",
+    grade: "8.08 CGPA / 10"
   },
   {
-    title: "Class 12",
-    place: "Vivekanand International Senior Secondary School",
-    note: "Focused on higher-secondary foundations for engineering.",
+    degree: "Class 12",
+    institution: "Vivekanand International Senior Secondary School",
+    description: "Focused on higher-secondary foundations for engineering.",
+    year: "Graduated",
+    grade: "Foundation"
   },
   {
-    title: "B.Tech Computer Science",
-    place: "Bennett University",
-    note: "2023 - 2027. Current GPA: 8.08.",
-  },
+    degree: "Class 10",
+    institution: "Vivekanand International Senior Secondary School",
+    description: "Built the academic base: math, science, and disciplined study.",
+    year: "Graduated",
+    grade: "Base"
+  }
 ];
 
 const skills = [
-  { group: "Interface Systems", icon: Monitor, level: "92", items: ["Next.js", "React", "Tailwind", "Responsive UI"] },
-  { group: "Realtime Backend", icon: Network, level: "88", items: ["Node.js", "Express", "Socket.IO", "APIs"] },
-  { group: "Data Layer", icon: Database, level: "82", items: ["MongoDB", "PostgreSQL", "Redis", "RabbitMQ"] },
-  { group: "AI Product Logic", icon: Brain, level: "78", items: ["OpenAI API", "Speech API", "Prompt flows", "Quizzes"] },
-  { group: "Delivery Stack", icon: Cpu, level: "86", items: ["Git", "Docker", "Vercel", "Railway"] },
-  { group: "Languages", icon: Terminal, level: "84", items: ["JavaScript", "TypeScript", "Python", "C++"] },
+  "Next.js", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "PostgreSQL", "Redis", "RabbitMQ", "TypeScript", "Python", "C++", "TailwindCSS", "Docker", "Git", "OpenAI API"
 ];
 
 const posts = [
-  {
-    title: "Built from a real roommate mismatch",
-    note: "Recent activity",
-    source: "A practical build note from the roommate matching project.",
-  },
-  {
-    title: "BroCooked, first full-stack Next.js project",
-    note: "Recent activity",
-    source: "An AI-powered recipe platform built while learning Next.js.",
-  },
-  {
-    title: "Find it.BU and portfolio work",
-    note: "Profile project activity",
-    source: "Lost-and-found project work connected to the profile.",
-  },
-  {
-    title: "Learning in public as a CSE builder",
-    note: "Recent activity",
-    source: "Bennett University, product thinking, and full-stack progress.",
-  },
+  { title: "The future of real-time systems", date: "Jan 12, 2026", readTime: "5 min", slug: "real-time-future" },
+  { title: "Scaling AI agents in production", date: "Dec 28, 2025", readTime: "12 min", slug: "scaling-ai" },
+  { title: "Why I switched to Tailwind v4", date: "Nov 15, 2025", readTime: "8 min", slug: "tailwind-v4" },
+  { title: "Building a career in 2026", date: "Oct 22, 2025", readTime: "6 min", slug: "career-2026" },
 ];
 
-function CircuitLine({ className, delay = 0 }) {
-  const pathRef = useRef(null);
-  const circleRef = useRef(null);
-  const svgRef = useRef(null);
+const codolioStats = {
+  totalSolved: 480,
+  dsaSolved: 421,
+  cpSolved: 59,
+  breakdown: {
+    easy: 150,
+    medium: 230,
+    hard: 41
+  },
+  ratings: {
+    leetcode: 1643,
+    codechef: 1421
+  },
+  streak: 96,
+  activeDays: 245,
+  globalRank: 8487
+};
 
-  useEffect(() => {
-    if (!pathRef.current) return undefined;
-    const length = pathRef.current.getTotalLength();
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: svgRef.current,
-        start: "top 90%",
-      },
-    });
+// Generate dummy heatmap data for the last 6 months
+const generateHeatmapData = () => {
+  const data = [];
+  const end = new Date();
+  const start = new Date();
+  start.setMonth(start.getMonth() - 6);
+  
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    if (Math.random() > 0.3) {
+      data.push({
+        date: d.toISOString().split('T')[0],
+        count: Math.floor(Math.random() * 5) + 1
+      });
+    }
+  }
+  return data;
+};
 
-    tl.fromTo(
-      pathRef.current,
-      { strokeDasharray: length, strokeDashoffset: length },
-      { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut", delay },
-    ).fromTo(
-      circleRef.current,
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" },
-      "-=0.3",
-    );
+const heatmapData = generateHeatmapData();
 
-    return () => tl.kill();
-  }, [delay]);
+// --- Components ---
 
-  return (
-    <svg ref={svgRef} viewBox="0 0 100 100" className={className} fill="none">
-      <path ref={pathRef} d="M0 50 L40 50 L60 20 L100 20" stroke="currentColor" strokeWidth="0.5" />
-      <circle ref={circleRef} cx="100" cy="20" r="2" fill="currentColor" />
-    </svg>
-  );
-}
+const ThemeToggle = ({ darkMode, toggle }) => (
+  <button 
+    onClick={toggle}
+    className="p-2 hover:text-primary transition-colors active:scale-90"
+    aria-label="Toggle theme"
+  >
+    {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+  </button>
+);
 
-function CodeSnippet() {
-  const lines = [
-    ["const", "status", "=", '"active_deployment";'],
-    ["await", "ship", "(", "{ realtime: true }", ");"],
-    ["sync", ".", "target", "(", '"sub-100ms"', ");"],
-    ["return", '"AI + realtime systems"', ";"],
+const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
+  const [isHidden, setIsHidden] = useState(false);
+  const [prevScroll, setPrevScroll] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { name: 'Intro', href: '#intro', id: 'intro' },
+    { name: 'Education', href: '#education', id: 'education' },
+    { name: 'Projects', href: '#projects', id: 'projects' },
+    { name: 'Codolio', href: '#codolio', id: 'codolio' },
+    { name: 'Skills', href: '#skills', id: 'skills' },
+    { name: 'Posts', href: '#posts', id: 'posts' },
+    { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
-  return (
-    <div className="code-snippet">
-      <div className="code-topbar">
-        <span />
-        <span />
-        <span />
-        <strong>portfolio.runtime.ts</strong>
-      </div>
-      <pre aria-label="Portfolio runtime code snippet">
-        {lines.map((line, index) => (
-          <code key={line.join("-")}>
-            <span className="line-number">{String(index + 1).padStart(2, "0")}</span>
-            <span className="token-key">{line[0]}</span> {line[1]} <span className="token-op">{line[2]}</span>{" "}
-            <span className="token-value">{line[3]}</span>
-          </code>
-        ))}
-      </pre>
-      <div className="code-pulse">
-        <span />
-        ACTIVE DEPLOYMENT
-      </div>
-    </div>
-  );
-}
+  const { scrollY } = useScroll();
 
-function HorizontalProjectCard({ project, index }) {
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const diff = latest - prevScroll;
+    if (latest > 100) {
+      if (diff > 0 && !isHidden) setIsHidden(true);
+      else if (diff < 0 && isHidden) setIsHidden(false);
+    } else {
+      setIsHidden(false);
+    }
+    setPrevScroll(latest);
+  });
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <article className="horizontal-card tech-card bg-white">
-      <div className="horizontal-image">
-        <img src={project.image} alt={`${project.title} project visual`} />
-        <span>{String(index + 1).padStart(2, "0")}</span>
-      </div>
-      <div className="horizontal-body">
-        <p>{project.type}</p>
-        <h3>{project.title}</h3>
-        <span className="metric-chip">{project.metric}</span>
-        <p className="project-copy">{project.copy}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.stack.map((item) => (
-            <span key={item} className="micro-chip">{item}</span>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-5 pt-4">
-          <a href={project.href} target="_blank" rel="noreferrer" className="micro-link">
-            Source <ArrowSquareOut size={15} weight="bold" />
-          </a>
-          {project.live ? (
-            <a href={project.live} target="_blank" rel="noreferrer" className="micro-link">
-              Live <ArrowSquareOut size={15} weight="bold" />
+    <>
+      <motion.header 
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" },
+        }}
+        animate={isHidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed top-0 w-full z-50 border-b border-grid-line/50 glass-panel bg-background/95"
+      >
+        <motion.div 
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-left"
+          style={{ scaleX }}
+        />
+        <nav className="flex justify-between items-center px-4 md:px-12 h-16 w-full max-w-screen-2xl mx-auto">
+          <div className="font-mono font-black text-primary tracking-tighter text-xl flex items-center gap-2">
+            <div className="w-2 h-2 bg-primary"></div>
+            KUNAL_RAI.SYS
+          </div>
+          
+          <div className="hidden lg:flex gap-8 items-center">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name}
+                href={link.href}
+                className={`font-mono text-[11px] uppercase tracking-widest transition-colors ${activeSection === link.id ? 'text-primary' : 'text-foreground/60 hover:text-primary'}`}
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <ThemeToggle darkMode={darkMode} toggle={toggleDarkMode} />
+            <button 
+              className="lg:hidden p-2 text-foreground/60 active:scale-90"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Terminal size={24} />
+            </button>
+            <a href="/Kunal_Rai_Resume.pdf" download className="bg-primary text-white font-mono text-[11px] tracking-widest uppercase px-6 py-2.5 hover:bg-primary-dark transition-all active:scale-95 hidden sm:flex items-center gap-2">
+              Resume <Download size={14} />
             </a>
-          ) : null}
-        </div>
-      </div>
-    </article>
-  );
-}
+          </div>
+        </nav>
+      </motion.header>
 
-export default function PortfolioExperience() {
-  const rootRef = useRef(null);
-  const projectTrackRef = useRef(null);
-  const postTrackRef = useRef(null);
+      {/* Mobile Nav Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center p-6 lg:hidden"
+          >
+            <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-md space-y-12 relative z-10 bg-background/95 p-8 border border-grid-line shadow-2xl"
+            >
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute -top-12 right-0 p-4 font-mono text-primary flex items-center gap-2 group"
+              >
+                <span className="text-[10px] uppercase tracking-widest">Terminate_Session</span>
+                <Plus size={24} className="rotate-45 group-hover:rotate-135 transition-transform" />
+              </button>
+
+              <div className="space-y-4">
+                <div className="font-mono text-[10px] text-primary uppercase tracking-[0.4em] mb-8">Navigation_Matrix</div>
+                {navLinks.map((link, idx) => (
+                  <motion.a 
+                    key={link.name}
+                    href={link.href}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: idx * 0.05 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="font-mono text-[10px] text-foreground/20">0{idx}</span>
+                      <span className={`text-4xl sm:text-6xl font-sans font-black uppercase tracking-tighter transition-all group-hover:text-primary ${activeSection === link.id ? 'text-primary italic' : 'text-foreground'}`}>
+                        {link.name}
+                      </span>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+
+              <div className="pt-8 border-t border-grid-line grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="font-mono text-[8px] text-foreground/30 uppercase">Status</div>
+                  <div className="font-sans font-bold text-xs flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                    OPERATIONAL
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="font-mono text-[8px] text-foreground/30 uppercase">Uptime</div>
+                  <div className="font-sans font-bold text-xs text-primary">8.08_GPA</div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+const SectionHeader = ({ title, subtitle, id }) => (
+  <motion.div 
+    id={id} 
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    className="flex flex-col md:flex-row md:items-end justify-between border-b border-grid-line pb-4 mb-12"
+  >
+    <h2 className="font-sans font-black text-4xl md:text-5xl uppercase tracking-tighter text-foreground">
+      {title.replace(' ', '_')}
+    </h2>
+    <div className="flex items-center gap-4 mt-4 md:mt-0">
+      <span className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">{subtitle || '/ ARCHIVE_01'}</span>
+      {id && <span className="font-mono text-[10px] text-primary">#{(id).toUpperCase()}</span>}
+    </div>
+  </motion.div>
+);
+
+const ArchitecturalMarker = ({ className }) => (
+  <div className={`relative ${className}`}>
+    <div className="absolute top-[-10px] left-[-10px] w-[20px] h-px bg-primary"></div>
+    <div className="absolute top-[-10px] left-[-10px] w-px h-[20px] bg-primary"></div>
+  </div>
+);
+
+const Hero = () => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  const [displayText, setDisplayText] = useState("");
+  const fullText = "Full-stack engineer specializing in real-time systems, AI-driven tools, and precision-engineered user interfaces.";
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    let removeCursorListener = () => {};
-
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray(".reveal").forEach((el) => {
-        gsap.from(el, {
-          y: 48,
-          rotateX: 5,
-          opacity: 0,
-          duration: 1,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 82%",
-            toggleActions: "play none none reverse",
-          },
-        });
-      });
-
-      gsap.to(".scroll-progress", {
-        scaleX: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.4,
-        },
-      });
-
-      gsap.to(".circuit-layer", {
-        yPercent: -18,
-        rotate: 5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(".diagnostic-orb", {
-        y: -24,
-        rotate: 360,
-        duration: 8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".ambient-cursor", {
-        scale: 1.18,
-        opacity: 0.7,
-        duration: 1.8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      const cursorX = gsap.quickTo(".ambient-cursor", "x", { duration: 0.35, ease: "power3.out" });
-      const cursorY = gsap.quickTo(".ambient-cursor", "y", { duration: 0.35, ease: "power3.out" });
-      const moveCursor = (event) => {
-        cursorX(event.clientX - 18);
-        cursorY(event.clientY - 18);
-      };
-      window.addEventListener("pointermove", moveCursor);
-      removeCursorListener = () => window.removeEventListener("pointermove", moveCursor);
-
-      gsap.utils.toArray(".roadmap-item").forEach((item, index) => {
-        gsap.from(item, {
-          x: index % 2 === 0 ? -42 : 42,
-          opacity: 0,
-          duration: 0.9,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        });
-      });
-
-      gsap.utils.toArray(".skill-bar").forEach((bar) => {
-        const level = bar.getAttribute("data-level") || 100;
-        gsap.fromTo(
-          bar,
-          { scaleX: 0 },
-          {
-            scaleX: level / 100,
-            duration: 1.35,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: bar,
-              start: "top 92%",
-            },
-          },
-        );
-      });
-
-      const horizontalSections = [
-        { section: ".projects-horizontal", track: projectTrackRef.current },
-        { section: ".posts-horizontal", track: postTrackRef.current },
-      ];
-
-      horizontalSections.forEach(({ section, track }) => {
-        if (!track) return;
-        if (!window.matchMedia("(min-width: 900px)").matches) return;
-        const distance = () => {
-          const sectionNode = document.querySelector(section);
-          const startPad = Number.parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
-          const visibleWidth = sectionNode?.getBoundingClientRect().width || window.innerWidth;
-          return Math.max(0, track.scrollWidth - visibleWidth + startPad + 180);
-        };
-        gsap.to(track, {
-          x: () => -distance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            start: "top top",
-            end: () => `+=${distance() + window.innerHeight * 0.8}`,
-          },
-        });
-      });
-    }, rootRef);
-
-    return () => {
-      removeCursorListener();
-      ctx.revert();
-    };
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(timer);
+    }, 30);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div ref={rootRef} className="min-h-screen blueprint-grid relative overflow-x-hidden font-sans">
-      <div className="ambient-cursor" aria-hidden="true" />
-      <div className="scroll-progress" />
-      <div className="page-shell mx-auto px-4 md:px-8 lg:px-10">
-        <SiteNav />
+    <section 
+      id="intro" 
+      ref={targetRef}
+      className="relative min-h-[90vh] flex items-center px-4 md:px-12 py-24 md:py-32 overflow-hidden"
+    >
+      <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
+        <motion.div 
+          style={{ opacity }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-7 space-y-6 md:space-y-8 z-10"
+        >
+          <div className="inline-flex items-center gap-3 border border-grid-line bg-background/50 px-4 py-1.5 font-mono text-[10px] uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            System Status: Operational // v8.0.8
+          </div>
+          
+          <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl leading-[0.9] tracking-tight text-foreground break-words">
+            ARCHITECTING <br/>
+            PLAYFUL TECH <br/>
+            THAT <span className="text-primary underline decoration-4 underline-offset-8">WORKS.</span>
+          </h1>
+          
+          <p className="text-lg md:text-2xl font-sans font-bold text-foreground/70 max-w-2xl min-h-[3.5em] leading-relaxed">
+            {displayText}<span className="animate-pulse">|</span>
+          </p>
+          
+          <div className="flex flex-wrap gap-4 md:gap-6 pt-4 md:pt-8">
+            <a href="#projects" className="flex-1 sm:flex-none justify-center bg-primary text-white px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all active:scale-95 hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1 text-center">
+              Initiate Sequence <ArrowRight size={18} />
+            </a>
+            <a href="https://github.com/VampKunal" target="_blank" className="flex-1 sm:flex-none justify-center border-2 border-foreground text-foreground px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all hover:bg-foreground hover:text-background active:scale-95 text-center">
+              Browse Files <Code2 size={18} />
+            </a>
+          </div>
+        </motion.div>
 
-        <div className="circuit-layer fixed inset-0 pointer-events-none -z-10 overflow-hidden opacity-10">
-          <CircuitLine className="absolute top-20 left-10 w-64 h-64 rotate-45" delay={0.5} />
-          <CircuitLine className="absolute bottom-40 right-20 w-80 h-80 -rotate-12" delay={1} />
-          <div className="diagnostic-orb absolute top-[18%] right-[8%] h-40 w-40 rounded-full border-4 border-accent-orange/30" />
-        </div>
-
-        <main className="space-y-6">
-          <section id="intro" className="section-container intro-section">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-10 xl:gap-14 items-center justify-center">
-              <div className="space-y-10 reveal">
-                <div className="space-y-4">
-                  <span className="text-[12px] font-black tracking-[0.4em] text-accent-orange uppercase bg-accent-orange/5 px-3 py-1 inline-block border-l-4 border-accent-orange">
-                    System Architect Protocol
-                  </span>
-                  <h1 className="hero-title text-6xl md:text-8xl font-black leading-[0.85] uppercase tracking-tighter">
-                    Kunal Rai <br />
-                    Builds Playful <br />
-                    Tech That <span className="text-accent-orange">Works.</span>
-                  </h1>
-                </div>
-                <p className="text-xl text-slate-500 max-w-lg font-medium leading-relaxed balance-copy">
-                  Real-time applications, AI-driven learning tools, and resilient system architectures designed for efficiency.
-                </p>
-                <div className="flex flex-wrap gap-6 pt-4">
-                  <ButtonLink href="/Kunal_Rai_Resume.pdf" download className="scale-110">
-                    Download Resume
-                  </ButtonLink>
-                  <ButtonLink href="#projects" tone="ghost" className="scale-110">
-                    See Projects
-                  </ButtonLink>
-                </div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9, x: 20 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="lg:col-span-5 relative mt-10 lg:mt-0"
+        >
+          <ArchitecturalMarker className="z-20" />
+          <div className="bg-background border-2 border-grid-line p-1 shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 overflow-hidden rounded-sm">
+            <div className="bg-foreground flex items-center justify-between px-4 py-2.5">
+              <div className="flex gap-2 text-primary font-mono text-xs">
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <div className="w-3 h-3 rounded-full bg-foreground/30 border border-grid-line/20"></div>
+                <div className="w-3 h-3 rounded-full bg-foreground/30 border border-grid-line/20"></div>
               </div>
-
-              <div className="tech-card bg-white p-5 lg:p-7 relative reveal hero-diagnostic">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[10px] opacity-20 uppercase font-black">
-                  Core_Diagnostics
-                </div>
-                <CodeSnippet />
-                <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-                  {["400+ DSA", "3 Builds", "8.08 GPA"].map((item) => (
-                    <div key={item} className="mini-stat">{item}</div>
-                  ))}
+              <div className="font-mono text-[10px] text-background/50 tracking-widest uppercase">kunal@rai: ~/sys-root</div>
+            </div>
+            <div className="p-6 font-mono text-xs text-green-500 bg-[#1A1B26] min-h-[320px]">
+              <div className="flex justify-between mb-6">
+                <span className="bg-primary text-white px-2 py-0.5 font-bold text-[10px]">BOOT_SEQUENCE</span>
+                <span className="text-foreground/30 font-mono text-[10px]">VER: 8.0.8_LIT</span>
+              </div>
+              <div className="space-y-2 opacity-90">
+                <p><span className="text-orange-400">$</span> initializing core-modules...</p>
+                <p className="text-foreground/40 pl-4">[OK] Frontend_Engine</p>
+                <p className="text-foreground/40 pl-4">[OK] Backend_Infrastructure</p>
+                <p className="text-foreground/40 pl-4">[OK] Design_System_Tokens</p>
+                <p className="mt-4"><span className="text-orange-400">$</span> systemctl status brain</p>
+                <p className="text-purple-400">● brain.service - Creative Intelligence</p>
+                <p className="text-foreground/40 pl-4">Active: active (running) since 1999</p>
+                <div className="mt-8 pt-4 border-t border-white/10 text-[11px] italic text-foreground/40">
+                  "The code is the architecture of the mind."
                 </div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <section id="education" className="section-container">
-            <SectionHeading title="Education Roadmap" subtitle="Academic path in scroll order" />
-            <div className="roadmap reveal">
-              {education.map((item, index) => (
-                <article key={`${item.title}-${item.place}`} className="roadmap-item tech-card bg-white">
-                  <div className="roadmap-index">0{index + 1}</div>
-                  <div className="bg-blueprint-line text-white p-4 roadmap-icon">
-                    <GraduationCap size={36} weight="bold" />
-                  </div>
+          <div className="absolute -bottom-6 -left-6 bg-background glass-panel px-6 py-4 border-2 border-foreground z-20 hidden lg:block">
+            <div className="text-[10px] font-mono text-foreground/40">LATENCY</div>
+            <div className="text-2xl font-bold font-mono tracking-tighter text-primary">12ms</div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const Counter = ({ value, duration = 2 }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      let start = 0;
+      const end = value;
+      const totalSteps = duration * 60;
+      const stepValue = end / totalSteps;
+      
+      const timer = setInterval(() => {
+        start += stepValue;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+      return () => clearInterval(timer);
+    }
+  }, [isInView, value, duration]);
+
+  return <span ref={ref}>{count}</span>;
+};
+
+const Stats = () => {
+  const stats = [
+    { value: 400, suffix: '+', label: 'Algorithms_Mastered' },
+    { value: 5, suffix: '', label: 'Production_Builds' },
+    { value: 8.08, suffix: '', label: 'Academic_Efficiency' },
+  ];
+
+  return (
+    <section className="px-4 md:px-12 py-12 max-w-screen-2xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 border border-grid-line glass-panel overflow-hidden">
+        {stats.map((stat, idx) => (
+          <motion.div 
+            key={idx}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className={`p-10 md:p-12 flex flex-col items-center justify-center group hover:bg-background transition-all cursor-crosshair ${idx < 2 ? 'md:border-r md:border-grid-line' : ''} border-b md:border-b-0 border-grid-line`}
+          >
+            <span className="font-sans font-black text-5xl md:text-7xl group-hover:text-primary transition-colors flex items-baseline">
+              <Counter value={stat.value} />
+              {stat.suffix}
+            </span>
+            <span className="font-mono text-[10px] tracking-widest uppercase text-foreground/40 mt-2 text-center">{stat.label}</span>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Projects = () => {
+  const [showAll, setShowAll] = useState(false);
+  const visibleProjects = showAll ? projects : projects.slice(0, 3);
+
+  return (
+    <section id="projects" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto">
+      <SectionHeader title="Selected Works" id="projects" subtitle="/ SYSTEM_MODULES" />
+      
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Large Feature */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          layout
+          className={`group relative overflow-hidden border border-grid-line shadow-xl aspect-video md:aspect-[16/10] ${showAll ? 'md:col-span-12' : 'md:col-span-8'}`}
+        >
+          <img 
+            src="/image.png" 
+            alt={projects[0].title}
+            className="w-full h-full object-contain bg-background grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.02]"
+          />
+          <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm flex flex-col justify-end p-6 md:p-12">
+            <span className="font-mono text-xs text-primary uppercase tracking-widest mb-2">{projects[0].category}</span>
+            <h3 className="font-sans font-black text-2xl md:text-4xl text-background mb-4 uppercase">{projects[0].title}</h3>
+            <p className="text-background/70 max-w-lg mb-6 md:mb-8 text-sm md:text-base leading-relaxed">{projects[0].desc}</p>
+            <div className="flex gap-4">
+              <a href="#" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+                View Source <ExternalIcon size={14} />
+              </a>
+              <a href="#" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+                Live Demo <Globe size={14} />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Dynamic Card Grid */}
+        <div className={`${showAll ? 'md:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' : 'md:col-span-4 flex flex-col gap-8'}`}>
+          <AnimatePresence mode="popLayout">
+            {visibleProjects.slice(1).map((project, idx) => (
+              <motion.div 
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className={`${!showAll && idx === 0 ? 'flex-1 bg-primary border-2 border-foreground' : 'border border-grid-line glass-panel'} p-6 md:p-8 flex flex-col justify-between group cursor-pointer transition-all hover:translate-x-1 hover:translate-y-1 relative shadow-lg min-h-[220px] md:min-h-[200px]`}
+              >
+                <div className={`absolute top-4 right-4 ${!showAll && idx === 0 ? 'text-background/20' : 'text-foreground/10'} font-black font-mono text-4xl`}>0{idx + 2}</div>
+                <div className="flex justify-between items-start">
+                  <Layers size={40} className={!showAll && idx === 0 ? "text-white" : "text-primary"} />
+                  <a href="#">
+                    <ArrowRight className={`${!showAll && idx === 0 ? 'text-background' : 'text-primary'} -rotate-45 group-hover:rotate-0 transition-transform`} />
+                  </a>
+                </div>
+                <div>
+                  <h3 className={`font-sans font-black text-xl md:text-2xl ${!showAll && idx === 0 ? 'text-background' : 'text-foreground'} uppercase leading-none`}>{project.title}</h3>
+                  <p className={`${!showAll && idx === 0 ? 'text-background/80' : 'text-foreground/50'} font-mono text-[11px] mt-4 tracking-widest`}>{project.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {!showAll && projects.length > 3 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="md:col-span-12 flex justify-center mt-4"
+          >
+            <button 
+              onClick={() => setShowAll(true)}
+              className="w-full sm:w-auto border-2 border-dashed border-grid-line p-6 px-12 flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-widest text-foreground/40 hover:text-primary hover:border-primary transition-colors group"
+            >
+              <Plus size={16} className="group-hover:rotate-90 transition-transform" /> Load More Subsystems
+            </button>
+          </motion.div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+const Codolio = () => {
+  return (
+    <section id="codolio" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto overflow-hidden">
+      <SectionHeader title="Codolio Analytics" id="codolio" subtitle="/ PROFILE_AGGREGATION" />
+      
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <div className="bg-foreground text-background p-8 border-2 border-primary shadow-brutal relative">
+            <div className="flex items-center gap-2 mb-6">
+              <TrendingUp className="text-primary" />
+              <span className="font-mono text-xs uppercase tracking-widest opacity-60">Performance_Metrics</span>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex justify-between items-end border-b border-background/10 pb-4">
+                <div>
+                  <div className="text-4xl font-black">{codolioStats.totalSolved}</div>
+                  <div className="font-mono text-[10px] opacity-40 uppercase">Total_Problems_Solved</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-primary">#{codolioStats.globalRank}</div>
+                  <div className="font-mono text-[10px] opacity-40 uppercase">Global_Rank</div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4">
+                <div className="p-4 border border-background/10 bg-background/5">
+                  <div className="text-xl font-bold text-green-500">{codolioStats.breakdown.easy}</div>
+                  <div className="font-mono text-[8px] opacity-40 uppercase">Easy</div>
+                </div>
+                <div className="p-4 border border-background/10 bg-background/5">
+                  <div className="text-xl font-bold text-yellow-500">{codolioStats.breakdown.medium}</div>
+                  <div className="font-mono text-[8px] opacity-40 uppercase">Medium</div>
+                </div>
+                <div className="p-4 border border-background/10 bg-background/5">
+                  <div className="text-xl font-bold text-red-500">{codolioStats.breakdown.hard}</div>
+                  <div className="font-mono text-[8px] opacity-40 uppercase">Hard</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center gap-3 p-4 bg-background/5 rounded-sm">
+                  <Activity size={20} className="text-primary" />
                   <div>
-                    <h3 className="text-2xl font-black uppercase tracking-tight">{item.title}</h3>
-                    <p className="text-lg text-slate-500 font-bold mt-2">{item.place}</p>
-                    <p className="text-sm text-slate-400 leading-relaxed max-w-lg mt-4">{item.note}</p>
+                    <div className="font-bold">{codolioStats.ratings.leetcode}</div>
+                    <div className="font-mono text-[8px] opacity-40 uppercase">LeetCode_Rating</div>
                   </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section id="projects" className="projects-horizontal horizontal-section">
-            <div className="horizontal-heading reveal">
-              <SectionHeading title="Project Showcase" subtitle="Pinned horizontal system scan" />
-            </div>
-            <div ref={projectTrackRef} className="horizontal-track">
-              {projects.map((project, index) => (
-                <HorizontalProjectCard key={`${project.title}-${index}`} project={project} index={index} />
-              ))}
-            </div>
-          </section>
-
-          <section id="skills" className="section-container">
-            <SectionHeading title="Technical Arsenal" subtitle="Systems, motion, data, and delivery" />
-            <div className="arsenal-grid reveal">
-              {skills.map((skillGroup) => {
-                const Icon = skillGroup.icon;
-                return (
-                  <article key={skillGroup.group} className="tech-card bg-white arsenal-card group">
-                    <div className="flex items-center justify-between gap-4 border-b-2 border-blueprint-line/10 pb-6">
-                      <div className="p-3 bg-slate-50 group-hover:bg-accent-orange group-hover:text-white transition-colors">
-                        <Icon size={32} weight="bold" />
-                      </div>
-                      <span className="font-mono text-[11px] font-black opacity-40">{skillGroup.level}%</span>
-                    </div>
-                    <h3 className="mt-8 text-2xl font-black uppercase tracking-tight">{skillGroup.group}</h3>
-                    <div className="skill-meter">
-                      <span className="skill-bar" data-level={skillGroup.level} />
-                    </div>
-                    <div className="flex flex-wrap gap-3 mt-6">
-                      {skillGroup.items.map((item) => (
-                        <span key={item} className="micro-chip">{item}</span>
-                      ))}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section id="posts" className="posts-horizontal horizontal-section">
-            <div className="horizontal-heading reveal">
-              <SectionHeading title="LinkedIn Signals" subtitle="Real public activity from the profile" />
-            </div>
-            <div ref={postTrackRef} className="horizontal-track post-track">
-              {posts.map((post, index) => (
-                <article key={post.title} className="horizontal-card post-panel tech-card bg-white">
-                  <div className="flex items-center justify-between gap-4">
-                    <LinkedinLogo size={34} weight="bold" className="linkedin-visible" />
-                  <span className="font-mono text-[10px] font-black uppercase opacity-40">POST 0{index + 1}</span>
                 </div>
-                <h3 className="mt-12 text-4xl font-black uppercase tracking-tight leading-none">{post.title}</h3>
-                <p className="mt-5 text-sm font-black uppercase tracking-[0.2em] text-slate-400">{post.note}</p>
-                <p className="mt-8 text-lg font-bold text-slate-500">"{post.source}"</p>
-                <a
-                    href="https://www.linkedin.com/in/kunal-rai-104347259/recent-activity/all/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-10 inline-flex items-center gap-2 text-[11px] font-black uppercase hover:text-accent-orange transition-all hover:gap-3"
-                  >
-                    Open activity <ArrowSquareOut size={16} weight="bold" />
-                  </a>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section id="contact" className="section-container contact-section">
-            <div className="tech-card bg-accent-orange p-10 md:p-16 text-white overflow-hidden relative reveal">
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-8">
-                  <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
-                    Ready to <br />
-                    Build the <br />
-                    <span className="text-blueprint-line">Next System?</span>
-                  </h2>
-                  <p className="text-xl font-bold opacity-90 max-w-md">
-                    Open for full-stack collaborations, product builds, and engineering roles.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-6 items-start lg:items-end">
-                  <a
-                    href="https://github.com/VampKunal"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="contact-cta bg-blueprint-line text-white"
-                  >
-                    <GithubLogo size={28} weight="bold" /> Access GitHub
-                  </a>
-                  <a
-                    href="https://in.linkedin.com/in/kunal-rai-104347259"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="contact-cta bg-white text-blueprint-line"
-                  >
-                    <LinkedinLogo size={28} weight="bold" /> LinkedIn Profile
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/kunal-rai-104347259/recent-activity/all/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="contact-cta bg-white/10 text-white"
-                  >
-                    <ArrowSquareOut size={28} weight="bold" /> Recent Activity
-                  </a>
+                <div className="flex items-center gap-3 p-4 bg-background/5 rounded-sm">
+                  <TrendingUp size={20} className="text-primary" />
+                  <div>
+                    <div className="font-bold">{codolioStats.ratings.codechef}</div>
+                    <div className="font-mono text-[8px] opacity-40 uppercase">CodeChef_Rating</div>
+                  </div>
                 </div>
               </div>
-              <Globe size={360} weight="thin" className="absolute -bottom-20 -right-20 opacity-10 pointer-events-none" />
-              <Sparkle size={92} weight="fill" className="absolute top-12 right-12 opacity-20 pointer-events-none" />
             </div>
-          </section>
-        </main>
+          </div>
 
-        <div className="fixed bottom-6 left-6 font-mono text-[9px] opacity-40 pointer-events-none hidden xl:block uppercase font-black tracking-widest">
-          SYSTEM_DIAGNOSTIC: [OK] | V8_ISOLATE_LOAD: 14% | NETWORK_PROTOCOL: QUIC/HTTP3
-        </div>
-        <div className="fixed top-6 right-6 font-mono text-[9px] opacity-40 pointer-events-none text-right hidden xl:block uppercase font-black tracking-widest">
-          PORTFOLIO_VERSION: 4.2.1-STABLE | BUILD_HASH: 0x9FA2BD
+          <div className="grid grid-cols-2 gap-4">
+            <div className="border border-grid-line p-6 flex flex-col items-center justify-center text-center">
+              <Calendar className="text-primary mb-2" />
+              <div className="text-3xl font-black">{codolioStats.streak}</div>
+              <div className="font-mono text-[10px] text-foreground/40 uppercase">Day_Max_Streak</div>
+            </div>
+            <div className="border border-grid-line p-6 flex flex-col items-center justify-center text-center">
+              <CheckCircle2 className="text-primary mb-2" />
+              <div className="text-3xl font-black">{codolioStats.activeDays}</div>
+              <div className="font-mono text-[10px] text-foreground/40 uppercase">Active_Days</div>
+            </div>
+          </div>
+          
+          <a href="https://codolio.com/profile/VampKunal" target="_blank" className="block w-full text-center border-2 border-foreground py-4 font-mono text-xs uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
+            Open Full Codolio Profile <ExternalIcon className="inline ml-2" size={14} />
+          </a>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-7 space-y-6"
+        >
+          <div className="font-mono text-xs uppercase tracking-widest text-foreground/40 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            Live_Activity_Heatmap
+          </div>
+          <div className="border border-grid-line p-4 md:p-8 overflow-x-auto bg-background/30 backdrop-blur-sm">
+             <HeatMap
+              value={heatmapData}
+              width={680}
+              height={180}
+              startDate={new Date(new Date().setMonth(new Date().getMonth() - 6))}
+              endDate={new Date()}
+              space={3}
+              rectSize={12}
+              legendCellSize={0}
+              panelColors={{
+                0: '#1a1a1a',
+                2: '#FF4F0033',
+                4: '#FF4F0066',
+                10: '#FF4F00aa',
+                20: '#FF4F00',
+              }}
+              rectProps={{
+                rx: 2
+              }}
+            />
+            <div className="flex justify-between mt-4 font-mono text-[8px] text-foreground/40 uppercase">
+              <span>Less_Activity</span>
+              <span>More_Activity</span>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+            <div className="space-y-2">
+              <div className="font-mono text-[10px] text-foreground/40 uppercase">DSA_Distribution</div>
+              <div className="h-2 w-full bg-grid-line relative">
+                <div className="absolute left-0 h-full bg-green-500" style={{ width: '31%' }} />
+                <div className="absolute left-[31%] h-full bg-yellow-500" style={{ width: '48%' }} />
+                <div className="absolute left-[79%] h-full bg-red-500" style={{ width: '21%' }} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-mono text-[10px] text-foreground/40 uppercase">Dev_Consistency</div>
+              <div className="h-2 w-full bg-grid-line relative">
+                <div className="absolute left-0 h-full bg-primary" style={{ width: '85%' }} />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const SkillsMarquee = () => {
+  return (
+    <section id="skills" className="py-24 overflow-hidden bg-foreground text-background">
+      <div className="px-4 md:px-12 max-w-screen-2xl mx-auto mb-12">
+        <div className="flex items-center gap-4">
+          <div className="w-2 h-2 bg-primary"></div>
+          <h2 className="font-sans font-black text-3xl uppercase tracking-tighter italic">CORE_STK // CAPABILITIES</h2>
         </div>
       </div>
+      
+      <div className="marquee">
+        <div className="marquee-content pt-4 pb-4">
+          {skills.concat(skills).map((skill, idx) => (
+            <div key={idx} className="flex items-center gap-4 md:gap-8 shrink-0">
+              <span className="font-sans font-black text-5xl md:text-8xl opacity-20 hover:opacity-100 hover:text-primary transition-all duration-500 cursor-default uppercase">
+                {skill}
+              </span>
+              <div className="w-4 h-4 md:w-8 md:h-8 bg-primary/20 rotate-45 shrink-0" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Education = () => {
+  return (
+    <section id="education" className="px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
+      <SectionHeader title="Academic Path" id="education" subtitle="/ EDUCATION_LOGS" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {education.map((edu, idx) => (
+          <motion.div 
+            key={idx} 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className="border border-grid-line p-8 relative hover:bg-foreground/5 transition-colors group"
+          >
+            <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-foreground/20">{edu.year}</div>
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-primary/10 text-primary">
+                <Globe size={24} />
+              </div>
+              <div>
+                <h3 className="font-sans font-black text-2xl uppercase text-foreground group-hover:text-primary transition-colors">{edu.degree}</h3>
+                <p className="font-mono text-xs uppercase tracking-widest text-foreground/60 mt-1">{edu.institution}</p>
+                <p className="mt-4 text-foreground/70 leading-relaxed">{edu.description}</p>
+                <div className="mt-6 inline-block font-mono text-[10px] bg-foreground text-background px-3 py-1 uppercase tracking-tighter">
+                  Grade: {edu.grade}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Posts = () => {
+  return (
+    <section id="posts" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto">
+      <SectionHeader title="Field Notes" id="posts" subtitle="/ THINKING_PROCESS" />
+      <div className="grid grid-cols-1 divide-y divide-grid-line border border-grid-line">
+        {posts.map((post, idx) => (
+          <motion.a 
+            key={post.slug} 
+            href="#" 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.05 }}
+            className="group flex flex-col md:flex-row md:items-center justify-between px-6 md:px-8 py-8 md:py-10 hover:bg-primary transition-all cursor-pointer overflow-hidden"
+          >
+            <div className="flex items-center gap-4 md:gap-6">
+              <span className="font-mono text-foreground/20 group-hover:text-background/40 transition-colors text-xs md:text-base">0{idx + 1}</span>
+              <h3 className="font-sans font-black text-xl md:text-3xl uppercase text-foreground group-hover:text-background transition-colors truncate max-w-[200px] sm:max-w-none">{post.title}</h3>
+            </div>
+            <div className="flex items-center gap-4 md:gap-6 mt-4 md:mt-0">
+              <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-foreground/40 group-hover:text-background/60 transition-colors">{post.date}</span>
+              <div className="w-8 md:w-12 h-px bg-grid-line group-hover:bg-background/20 hidden sm:block"></div>
+              <span className="font-mono text-[10px] md:text-xs text-primary group-hover:text-background transition-colors">{post.readTime}</span>
+              <ChevronRight className="text-primary group-hover:text-background transition-all group-hover:translate-x-2 w-4 h-4 md:w-6 md:h-6" />
+            </div>
+          </motion.a>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Contact = () => (
+  <section id="contact" className="px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
+    <SectionHeader title="Initiate Contact" id="contact" subtitle="/ COMMS_MODULE" />
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <motion.div 
+        initial={{ opacity: 0, x: -30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="lg:col-span-5 space-y-8"
+      >
+        <h3 className="font-sans font-black text-4xl uppercase tracking-tighter">Ready for the <br/><span className="text-primary">next sequence?</span></h3>
+        <p className="text-foreground/70 text-lg leading-relaxed">
+          I'm currently available for full-stack engineering roles, technical consultation, or algorithmic research collaborations.
+        </p>
+        
+        <div className="space-y-4 pt-4">
+          <a href="mailto:kunalrai.work@gmail.com" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
+              <Mail size={20} className="text-foreground/40 group-hover:text-primary" />
+            </div>
+            <div>
+              <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Email_Primary</div>
+              <div className="font-sans font-bold">kunalrai.work@gmail.com</div>
+            </div>
+          </a>
+          <div className="flex items-center gap-4 group">
+            <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
+              <Database size={20} className="text-foreground/40 group-hover:text-primary" />
+            </div>
+            <div>
+              <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Location_Node</div>
+              <div className="font-sans font-bold">Mumbai, IN / Remote</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-6 pt-8">
+          <a href="https://github.com/VampKunal" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
+            <GithubIcon size={20} />
+          </a>
+          <a href="https://in.linkedin.com/in/kunal-rai-104347259" target="_blank" className="w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-primary hover:text-background hover:border-primary transition-all">
+            <LinkedinIcon size={20} />
+          </a>
+        </div>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="lg:col-span-7 bg-background border border-grid-line p-8 md:p-12 glass-panel"
+      >
+        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Sender_Identity</label>
+              <input type="text" placeholder="John_Doe" className="w-full bg-transparent p-2 outline-none font-sans font-bold" />
+            </div>
+            <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Return_Protocol</label>
+              <input type="email" placeholder="john@domain.com" className="w-full bg-transparent p-2 outline-none font-sans font-bold" />
+            </div>
+          </div>
+          <div className="space-y-2 border-b border-grid-line focus-within:border-primary transition-colors">
+            <label className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Payload_Data</label>
+            <textarea rows={4} placeholder="Establishing connection request..." className="w-full bg-transparent p-2 outline-none font-sans font-bold resize-none"></textarea>
+          </div>
+          <button className="w-full bg-primary text-white py-6 font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-dark transition-all active:scale-95 shadow-brutal">
+            Transmit Signal <Send size={16} />
+          </button>
+        </form>
+      </motion.div>
+    </div>
+  </section>
+);
+
+const Footer = () => (
+  <footer className="w-full border-t border-grid-line bg-background relative z-10">
+    <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-16 w-full gap-12 max-w-screen-2xl mx-auto">
+      <div className="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
+        <div className="text-foreground font-black font-sans tracking-tighter text-3xl flex items-center gap-2">
+          <div className="w-4 h-4 bg-foreground"></div>
+          KUNAL RAI
+        </div>
+        <div className="font-mono text-[10px] uppercase tracking-widest text-foreground/30">
+          STABLE_BUILD: 8.08_GPA // © 2026 ENCRYPTED_CORE
+        </div>
+      </div>
+      
+      <div className="flex gap-12 flex-wrap justify-center">
+        <a href="https://github.com/VampKunal" target="_blank" className="font-mono text-[11px] uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors">GitHub</a>
+        <a href="https://in.linkedin.com/in/kunal-rai-104347259" target="_blank" className="font-mono text-[11px] uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+);
+
+export default function PortfolioExperience() {
+  const [darkMode, setDarkMode] = useState(true);
+  const [activeSection, setActiveSection] = useState('intro');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['intro', 'education', 'projects', 'codolio', 'skills', 'posts', 'contact'];
+      const current = sections.find(section => {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (current) setActiveSection(current);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  return (
+    <div className="min-h-screen bg-background selection-primary relative">
+      <div className="fixed inset-0 bg-grid opacity-30 pointer-events-none -z-10" />
+      <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} activeSection={activeSection} />
+      
+      <main className="relative z-0">
+        <Hero />
+        <Stats />
+        <Projects />
+        <Codolio />
+        <SkillsMarquee />
+        <Education />
+        <Posts />
+        <Contact />
+      </main>
+
+      <Footer />
     </div>
   );
 }
