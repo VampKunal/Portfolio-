@@ -541,7 +541,7 @@ const Projects = () => {
           <img
             src="/image.png"
             alt={projects[0].title}
-            className="w-full h-full object-contain bg-background grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.02]"
+            className="w-full h-full object-contain bg-background transition-all duration-700 group-hover:scale-[1.02]"
           />
           <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm flex flex-col justify-end p-6 md:p-12">
             <span className="font-mono text-xs text-primary uppercase tracking-widest mb-2">{projects[0].category}</span>
@@ -708,7 +708,7 @@ const Codolio = ({ darkMode }) => {
                 Dev_Card
               </div>
               <div className="border border-grid-line p-1 bg-background/30 backdrop-blur-sm shadow-xl hover:border-primary/30 transition-colors">
-                <img src={devCard} alt="Developer Card" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src={devCard} alt="Developer Card" className="w-full h-auto transition-all duration-500" />
               </div>
             </div>
 
@@ -718,7 +718,7 @@ const Codolio = ({ darkMode }) => {
                 Profile_Card
               </div>
               <div className="border border-grid-line p-1 bg-background/30 backdrop-blur-sm shadow-xl hover:border-primary/30 transition-colors">
-                <img src={profileCard} alt="Profile Card" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src={profileCard} alt="Profile Card" className="w-full h-auto transition-all duration-500" />
               </div>
             </div>
           </div>
