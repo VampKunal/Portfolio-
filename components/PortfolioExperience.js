@@ -1,38 +1,27 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { 
-  Moon, 
-  Sun, 
-  ArrowRight, 
-  Code2, 
-  ExternalLink, 
-  Github, 
-  Linkedin, 
-  Download, 
+import {
+  Moon,
+  Sun,
+  ArrowRight,
+  Code2,
+  Download,
   ChevronRight,
   Database,
-  Cpu,
   Globe,
   Mail,
   Send,
   Terminal,
   Layers,
   Plus,
-  Monitor,
-  Network,
-  Brain,
-  MessageSquare,
-  Video,
-  Smartphone,
-  Zap,
   TrendingUp,
   Activity,
   CheckCircle2,
   Calendar
 } from 'lucide-react';
-import { 
-  GithubLogo as GithubIcon, 
+import {
+  GithubLogo as GithubIcon,
   LinkedinLogo as LinkedinIcon,
   ArrowSquareOut as ExternalIcon
 } from "@phosphor-icons/react";
@@ -42,50 +31,50 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView,
 
 const projects = [
   {
-    title: "PROJECT_ALPHA",
+    title: "IdeaRoom",
     category: "System Module // 01",
-    desc: "A high-performance system architecture designed for real-time data processing and sub-millisecond latency.",
+    desc: "Real Time whiteboard collabration for students and professionals",
     metric: "sub-1ms",
     image: "/image.png",
-    href: "#",
-    live: "#",
-    stack: ["Next.js", "Socket.IO", "Redis"]
+    href: "https://github.com/VampKunal/IdeaRoom",
+    live: "idea-room-ashy.vercel.app",
+    stack: ["MERN", "Socket.IO", "Redis", "Microservices", "Docker", "Mongoose,RabbitMQ"]
   },
   {
-    title: "PROJECT_BETA",
-    category: "AI Neural Net // 02",
-    desc: "Autonomous agent system capable of processing natural language and executing complex task sequences.",
+    title: "EKLAVYA",
+    category: "AI Tutor // 02",
+    desc: "AI Tutor for students and professionals",
     metric: "v2.0-core",
     image: "/image.png",
-    href: "#",
-    stack: ["TypeScript", "OpenAI API", "Node.js"]
+    href: "https://github.com/VampKunal/EKLAVYA",
+    stack: ["TypeScript", "OpenAI API", "Node.js, Supabase", "shadcnUI", "Mongoose"]
   },
   {
-    title: "PROJECT_GAMMA",
-    category: "Cloud Mesh // 03",
-    desc: "Distributed infrastructure with self-healing nodes and automated load balancing for global scaling.",
+    title: "VIBLY",
+    category: "Social Media // 03",
+    desc: "A next-gen social media platform designed for seamless content sharing, real-time interactions, and community building.",
     metric: "99.9% Up",
     image: "/image.png",
-    href: "#",
-    stack: ["Docker", "Kubernetes", "AWS"]
+    href: "https://github.com/VampKunal/VIBLY",
+    stack: ["StreamAPI, MERN , TailwindCSS, MongoDB , Zustand ,Socket.io"]
   },
   {
-    title: "PROJECT_DELTA",
+    title: "CoreSight",
     category: "Edge Node // 04",
-    desc: "Ultra-low power compute node designed for IoT clusters and remote sensor data aggregation.",
-    metric: "IoT-opt",
+    desc: "A web App for users to get suggestions on there Gym postures and diet recommendations",
+    metric: "IoT-Optimization",
     image: "/image.png",
-    href: "#",
-    stack: ["C++", "Python", "MQTT"]
+    href: "https://github.com/VampKunal/CoreSight",
+    stack: ["python", "MERN", "openaiAPI,React Native, JWT , Mediapipe , OpenCV,Socket.io, TailwindCSS,Mongoose"]
   },
   {
-    title: "PROJECT_EPSILON",
+    title: "WallSmart1",
     category: "Secure Core // 05",
-    desc: "Cryptographic security layer for sensitive data protection and decentralized identity verification.",
-    metric: "AES-256",
+    desc: "A web app made for walmart hackathon for there inventory management issue",
+    metric: "Hackathon",
     image: "/image.png",
-    href: "#",
-    stack: ["Go", "Solidity", "Hardhat"]
+    href: "https://github.com/VampKunal/WallSmart1",
+    stack: ["nextjs , huggingface , openaiAPI , mongoose"]
   }
 ];
 
@@ -118,10 +107,48 @@ const skills = [
 ];
 
 const posts = [
-  { title: "The future of real-time systems", date: "Jan 12, 2026", readTime: "5 min", slug: "real-time-future" },
-  { title: "Scaling AI agents in production", date: "Dec 28, 2025", readTime: "12 min", slug: "scaling-ai" },
-  { title: "Why I switched to Tailwind v4", date: "Nov 15, 2025", readTime: "8 min", slug: "tailwind-v4" },
-  { title: "Building a career in 2026", date: "Oct 22, 2025", readTime: "6 min", slug: "career-2026" },
+  {
+    title: "Rebuilding FitTrack with Microservices & AI",
+    date: "Apr 2026",
+    readTime: "6 min",
+    slug: "fittrack-microservices-ai",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_reactnative-fastapi-nodejs-activity-7449498115059101696-0t8s?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  },
+  {
+    title: "Why Revisiting DSA Problems Works Better Than Solving New Ones",
+    date: "Apr 2026",
+    readTime: "4 min",
+    slug: "dsa-revision-strategy",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_leetcode-dsa-systemdesign-activity-7445744402414882816-OrUA?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  },
+  {
+    title: "Competitive Programming: Why Improvement Isn’t Linear",
+    date: "Mar 2026",
+    readTime: "3 min",
+    slug: "cp-improvement-not-linear",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_leetcode-competitiveprogramming-datastructures-activity-7438882209840848897-6NT9?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  },
+  {
+    title: "From 200 to 300 DSA Problems: What Actually Changed",
+    date: "Mar 2026",
+    readTime: "4 min",
+    slug: "dsa-300-lessons",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_leetcode-systemdesign-dsa-activity-7429788328708726784-ahy3?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  },
+  {
+    title: "IdeaRoom: Building a Real-Time Collaboration Platform",
+    date: "Feb 2026",
+    readTime: "6 min",
+    slug: "idearoom-realtime-platform",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_buildinpublic-webrtc-realtimeapps-activity-7423387051091464193-Eefx?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  },
+  {
+    title: "What Deployment Taught Me About Real Systems",
+    date: "Feb 2026",
+    readTime: "5 min",
+    slug: "deployment-real-world-lessons",
+    href: "https://www.linkedin.com/posts/kunal-rai-104347259_softwareengineering-webdevelopment-devops-activity-7420818824142315521-9cFr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD-Wp9QBBjrhlq1ErLGtN7hpgAOl-GOR7zU"
+  }
 ];
 
 const codolioStats = {
@@ -145,7 +172,7 @@ const codolioStats = {
 // --- Components ---
 
 const ThemeToggle = ({ darkMode, toggle }) => (
-  <button 
+  <button
     onClick={toggle}
     className="p-2 hover:text-primary transition-colors active:scale-90"
     aria-label="Toggle theme"
@@ -191,7 +218,7 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
 
   return (
     <>
-      <motion.header 
+      <motion.header
         variants={{
           visible: { y: 0 },
           hidden: { y: "-100%" },
@@ -200,19 +227,19 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className="fixed top-0 w-full z-50 border-b border-grid-line/50 glass-panel bg-background/95"
       >
-        <motion.div 
+        <motion.div
           className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-left"
           style={{ scaleX }}
         />
         <nav className="flex justify-between items-center px-4 md:px-12 h-16 w-full max-w-screen-2xl mx-auto">
           <div className="font-mono font-black text-primary tracking-tighter text-xl flex items-center gap-2">
             <div className="w-2 h-2 bg-primary"></div>
-            KUNAL_RAI.SYS
+            KUNAL_RAI.TECH
           </div>
-          
+
           <div className="hidden lg:flex gap-8 items-center">
             {navLinks.map((link) => (
-              <a 
+              <a
                 key={link.name}
                 href={link.href}
                 className={`font-mono text-[11px] uppercase tracking-widest transition-colors ${activeSection === link.id ? 'text-primary' : 'text-foreground/60 hover:text-primary'}`}
@@ -224,7 +251,7 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
 
           <div className="flex items-center gap-4">
             <ThemeToggle darkMode={darkMode} toggle={toggleDarkMode} />
-            <button 
+            <button
               className="lg:hidden p-2 text-foreground/60 active:scale-90"
               onClick={() => setIsMobileMenuOpen(true)}
             >
@@ -240,20 +267,20 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
       {/* Mobile Nav Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-background/60 backdrop-blur-xl flex flex-col items-center justify-center p-6 lg:hidden"
           >
             <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-md space-y-12 relative z-10 glass-panel p-8 border border-grid-line shadow-2xl rounded-sm"
             >
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="absolute -top-12 right-0 p-4 font-mono text-primary flex items-center gap-2 group"
               >
@@ -264,7 +291,7 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
               <div className="space-y-4">
                 <div className="font-mono text-[10px] text-primary uppercase tracking-[0.4em] mb-8">Navigation_Matrix</div>
                 {navLinks.map((link, idx) => (
-                  <motion.a 
+                  <motion.a
                     key={link.name}
                     href={link.href}
                     initial={{ x: -20, opacity: 0 }}
@@ -292,8 +319,6 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="font-mono text-[8px] text-foreground/30 uppercase">Uptime</div>
-                  <div className="font-sans font-bold text-xs text-primary">8.08_GPA</div>
                 </div>
               </div>
             </motion.div>
@@ -305,8 +330,8 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
 };
 
 const SectionHeader = ({ title, subtitle, id }) => (
-  <motion.div 
-    id={id} 
+  <motion.div
+    id={id}
     initial={{ opacity: 0, x: -20 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
@@ -353,13 +378,13 @@ const Hero = () => {
   }, []);
 
   return (
-    <section 
-      id="intro" 
+    <section
+      id="intro"
       ref={targetRef}
       className="relative min-h-[90vh] flex items-center px-4 md:px-12 py-24 md:py-32 overflow-hidden"
     >
       <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
-        <motion.div 
+        <motion.div
           style={{ opacity }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -368,30 +393,30 @@ const Hero = () => {
         >
           <div className="inline-flex items-center gap-3 border border-grid-line bg-background/50 px-4 py-1.5 font-mono text-[10px] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            System Status: Operational // v8.0.8
+            System Status: Operational
           </div>
-          
+
           <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl leading-[0.9] tracking-tight text-foreground break-words">
-            ARCHITECTING <br/>
-            PLAYFUL TECH <br/>
-            THAT <span className="text-primary underline decoration-4 underline-offset-8">WORKS.</span>
+            <span className="text-primary ">KUNAL RAI </span>
+            FULLSTACK <br />
+            DEVELOPER <br />
           </h1>
-          
+
           <p className="text-lg md:text-2xl font-sans font-bold text-foreground/70 max-w-2xl min-h-[3.5em] leading-relaxed">
             {displayText}<span className="animate-pulse">|</span>
           </p>
-          
+
           <div className="flex flex-wrap gap-4 md:gap-6 pt-4 md:pt-8">
-            <a href="#projects" className="flex-1 sm:flex-none justify-center bg-primary text-white px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all active:scale-95 hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1 text-center">
+            <a href="#contact" className="flex-1 sm:flex-none justify-center bg-primary text-white px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all active:scale-95 hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1 text-center">
               Initiate Sequence <ArrowRight size={18} />
             </a>
             <a href="https://github.com/VampKunal" target="_blank" className="flex-1 sm:flex-none justify-center border-2 border-foreground text-foreground px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all hover:bg-foreground hover:text-background active:scale-95 text-center">
-              Browse Files <Code2 size={18} />
+              Browse GitHub <Code2 size={18} />
             </a>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -410,7 +435,7 @@ const Hero = () => {
             <div className="p-6 font-mono text-xs text-green-500 bg-[#1A1B26] min-h-[320px]">
               <div className="flex justify-between mb-6">
                 <span className="bg-primary text-white px-2 py-0.5 font-bold text-[10px]">BOOT_SEQUENCE</span>
-                <span className="text-foreground/30 font-mono text-[10px]">VER: 8.0.8_LIT</span>
+                <span className="text-foreground/30 font-mono text-[10px]">VER: 1.0.0</span>
               </div>
               <div className="space-y-2 opacity-90">
                 <p><span className="text-orange-400">$</span> initializing core-modules...</p>
@@ -448,7 +473,7 @@ const Counter = ({ value, duration = 2 }) => {
       const end = value;
       const totalSteps = duration * 60;
       const stepValue = end / totalSteps;
-      
+
       const timer = setInterval(() => {
         start += stepValue;
         if (start >= end) {
@@ -476,7 +501,7 @@ const Stats = () => {
     <section className="px-4 md:px-12 py-12 max-w-screen-2xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-3 border border-grid-line glass-panel overflow-hidden">
         {stats.map((stat, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -503,18 +528,18 @@ const Projects = () => {
   return (
     <section id="projects" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto">
       <SectionHeader title="Selected Works" id="projects" subtitle="/ SYSTEM_MODULES" />
-      
+
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
         {/* Large Feature */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           layout
           className={`group relative overflow-hidden border border-grid-line shadow-xl aspect-video md:aspect-[16/10] ${showAll ? 'md:col-span-12' : 'md:col-span-8'}`}
         >
-          <img 
-            src="/image.png" 
+          <img
+            src="/image.png"
             alt={projects[0].title}
             className="w-full h-full object-contain bg-background grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.02]"
           />
@@ -523,12 +548,14 @@ const Projects = () => {
             <h3 className="font-sans font-black text-2xl md:text-4xl text-background mb-4 uppercase">{projects[0].title}</h3>
             <p className="text-background/70 max-w-lg mb-6 md:mb-8 text-sm md:text-base leading-relaxed">{projects[0].desc}</p>
             <div className="flex gap-4">
-              <a href="#" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+              <a href={projects[0].href} target="_blank" rel="noopener noreferrer" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
                 View Source <ExternalIcon size={14} />
               </a>
-              <a href="#" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
-                Live Demo <Globe size={14} />
-              </a>
+              {projects[0].live && (
+                <a href={`https://${projects[0].live}`} target="_blank" rel="noopener noreferrer" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+                  Live Demo <Globe size={14} />
+                </a>
+              )}
             </div>
           </div>
         </motion.div>
@@ -537,7 +564,7 @@ const Projects = () => {
         <div className={`${showAll ? 'md:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' : 'md:col-span-4 flex flex-col gap-8'}`}>
           <AnimatePresence mode="popLayout">
             {visibleProjects.slice(1).map((project, idx) => (
-              <motion.div 
+              <motion.div
                 key={project.title}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -550,7 +577,7 @@ const Projects = () => {
                 <div className={`absolute top-4 right-4 ${!showAll && idx === 0 ? 'text-background/20' : 'text-foreground/10'} font-black font-mono text-4xl`}>0{idx + 2}</div>
                 <div className="flex justify-between items-start">
                   <Layers size={40} className={!showAll && idx === 0 ? "text-white" : "text-primary"} />
-                  <a href="#">
+                  <a href={project.href} target="_blank" rel="noopener noreferrer">
                     <ArrowRight className={`${!showAll && idx === 0 ? 'text-background' : 'text-primary'} -rotate-45 group-hover:rotate-0 transition-transform`} />
                   </a>
                 </div>
@@ -564,13 +591,13 @@ const Projects = () => {
         </div>
 
         {!showAll && projects.length > 3 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="md:col-span-12 flex justify-center mt-4"
           >
-            <button 
+            <button
               onClick={() => setShowAll(true)}
               className="w-full sm:w-auto border-2 border-dashed border-grid-line p-6 px-12 flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-widest text-foreground/40 hover:text-primary hover:border-primary transition-colors group"
             >
@@ -590,9 +617,9 @@ const Codolio = ({ darkMode }) => {
   return (
     <section id="codolio" className="px-4 md:px-12 py-24 max-w-screen-2xl mx-auto overflow-hidden">
       <SectionHeader title="Codolio Analytics" id="codolio" subtitle="/ PROFILE_AGGREGATION" />
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -603,7 +630,7 @@ const Codolio = ({ darkMode }) => {
               <TrendingUp className="text-primary" />
               <span className="font-mono text-xs uppercase tracking-widest opacity-60">Performance_Metrics</span>
             </div>
-            
+
             <div className="space-y-6">
               <div className="flex justify-between items-end border-b border-background/10 pb-4">
                 <div>
@@ -615,7 +642,7 @@ const Codolio = ({ darkMode }) => {
                   <div className="font-mono text-[10px] opacity-40 uppercase">Global_Rank</div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-3 gap-4">
                 <div className="p-4 border border-background/10 bg-background/5">
                   <div className="text-xl font-bold text-green-500">{codolioStats.breakdown.easy}</div>
@@ -662,13 +689,13 @@ const Codolio = ({ darkMode }) => {
               <div className="font-mono text-[10px] text-foreground/40 uppercase">Active_Days</div>
             </div>
           </div>
-          
+
           <a href="https://codolio.com/profile/VampKunal" target="_blank" className="block w-full text-center border-2 border-foreground py-4 font-mono text-xs uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
             Open Full Codolio Profile <ExternalIcon className="inline ml-2" size={14} />
           </a>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -695,23 +722,8 @@ const Codolio = ({ darkMode }) => {
               </div>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-            <div className="space-y-2">
-              <div className="font-mono text-[10px] text-foreground/40 uppercase">DSA_Distribution</div>
-              <div className="h-2 w-full bg-grid-line relative">
-                <div className="absolute left-0 h-full bg-green-500" style={{ width: '31%' }} />
-                <div className="absolute left-[31%] h-full bg-yellow-500" style={{ width: '48%' }} />
-                <div className="absolute left-[79%] h-full bg-red-500" style={{ width: '21%' }} />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="font-mono text-[10px] text-foreground/40 uppercase">Dev_Consistency</div>
-              <div className="h-2 w-full bg-grid-line relative">
-                <div className="absolute left-0 h-full bg-primary" style={{ width: '85%' }} />
-              </div>
-            </div>
-          </div>
+
+
         </motion.div>
       </div>
     </section>
@@ -727,7 +739,7 @@ const SkillsMarquee = () => {
           <h2 className="font-sans font-black text-3xl uppercase tracking-tighter italic">CORE_STK // CAPABILITIES</h2>
         </div>
       </div>
-      
+
       <div className="marquee">
         <div className="marquee-content pt-4 pb-4">
           {skills.concat(skills).map((skill, idx) => (
@@ -750,8 +762,8 @@ const Education = () => {
       <SectionHeader title="Academic Path" id="education" subtitle="/ EDUCATION_LOGS" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {education.map((edu, idx) => (
-          <motion.div 
-            key={idx} 
+          <motion.div
+            key={idx}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -785,9 +797,11 @@ const Posts = () => {
       <SectionHeader title="Field Notes" id="posts" subtitle="/ THINKING_PROCESS" />
       <div className="grid grid-cols-1 divide-y divide-grid-line border border-grid-line">
         {posts.map((post, idx) => (
-          <motion.a 
-            key={post.slug} 
-            href="#" 
+          <motion.a
+            key={post.slug}
+            href={post.href}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -815,17 +829,17 @@ const Contact = () => (
   <section id="contact" className="px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
     <SectionHeader title="Initiate Contact" id="contact" subtitle="/ COMMS_MODULE" />
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: -30 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         className="lg:col-span-5 space-y-8"
       >
-        <h3 className="font-sans font-black text-4xl uppercase tracking-tighter">Ready for the <br/><span className="text-primary">next sequence?</span></h3>
+        <h3 className="font-sans font-black text-4xl uppercase tracking-tighter">Ready for the <br /><span className="text-primary">next sequence?</span></h3>
         <p className="text-foreground/70 text-lg leading-relaxed">
           I'm currently available for full-stack engineering roles, technical consultation, or algorithmic research collaborations.
         </p>
-        
+
         <div className="space-y-4 pt-4">
           <a href="mailto:kunalrai.work@gmail.com" className="flex items-center gap-4 group">
             <div className="w-12 h-12 border border-grid-line flex items-center justify-center group-hover:border-primary transition-colors">
@@ -833,7 +847,7 @@ const Contact = () => (
             </div>
             <div>
               <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Email_Primary</div>
-              <div className="font-sans font-bold">kunalrai.work@gmail.com</div>
+              <div className="font-sans font-bold">kunalrai72899@gamil.com</div>
             </div>
           </a>
           <div className="flex items-center gap-4 group">
@@ -842,7 +856,7 @@ const Contact = () => (
             </div>
             <div>
               <div className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">Location_Node</div>
-              <div className="font-sans font-bold">Mumbai, IN / Remote</div>
+              <div className="font-sans font-bold">Delhi, IN / Remote</div>
             </div>
           </div>
         </div>
@@ -857,7 +871,7 @@ const Contact = () => (
         </div>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -896,10 +910,10 @@ const Footer = () => (
           KUNAL RAI
         </div>
         <div className="font-mono text-[10px] uppercase tracking-widest text-foreground/30">
-          STABLE_BUILD: 8.08_GPA // © 2026 ENCRYPTED_CORE
+          © 2026 ENCRYPTED_CORE
         </div>
       </div>
-      
+
       <div className="flex gap-12 flex-wrap justify-center">
         <a href="https://github.com/VampKunal" target="_blank" className="font-mono text-[11px] uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors">GitHub</a>
         <a href="https://in.linkedin.com/in/kunal-rai-104347259" target="_blank" className="font-mono text-[11px] uppercase tracking-widest text-foreground/40 hover:text-primary transition-colors">LinkedIn</a>
@@ -942,7 +956,7 @@ export default function PortfolioExperience() {
     <div className="min-h-screen bg-background selection-primary relative">
       <div className="fixed inset-0 bg-grid opacity-30 pointer-events-none -z-10" />
       <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} activeSection={activeSection} />
-      
+
       <main className="relative z-0">
         <Hero />
         <Stats />
