@@ -1014,7 +1014,7 @@ export default function PortfolioExperience() {
 
   return (
     <div className="min-h-screen bg-background selection-primary relative">
-      <div className="fixed inset-0 bg-grid opacity-30 pointer-events-none -z-10" />
+      <div className="fixed inset-0 bg-grid opacity-80 pointer-events-none -z-10" />
       <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} activeSection={activeSection} />
 
       <main className="relative z-0">
