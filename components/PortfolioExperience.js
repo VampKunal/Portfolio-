@@ -257,7 +257,7 @@ const Navbar = ({ darkMode, toggleDarkMode, activeSection }) => {
             >
               <Terminal size={24} />
             </button>
-            <a href="/kunal_rai_resume.pdf" download className="bg-primary text-white font-mono text-[11px] tracking-widest uppercase px-6 py-2.5 hover:bg-primary-dark transition-all active:scale-95 hidden sm:flex items-center gap-2">
+            <a href="/Kunal_Rai_Resume.pdf" download className="bg-primary text-white font-mono text-[11px] tracking-widest uppercase px-6 py-2.5 hover:bg-primary-dark transition-all active:scale-95 hidden sm:flex items-center gap-2">
               Resume <Download size={14} />
             </a>
           </div>

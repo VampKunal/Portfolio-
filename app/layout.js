@@ -12,7 +12,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
-  title: "Kunal Rai | Full-Stack Systems Engineer",
+  title: "Kunal Rai",
   description:
     "Portfolio of Kunal Rai, specializing in real-time systems, AI-driven tools, and precision-engineered user interfaces.",
   icons: {
