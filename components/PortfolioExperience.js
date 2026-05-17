@@ -26,6 +26,10 @@ import {
   ArrowSquareOut as ExternalIcon
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView, useMotionValueEvent } from 'motion/react';
+import LoadingScreen from './LoadingScreen';
+import CustomCursor from './CustomCursor';
+import PlexusBackground from './PlexusBackground';
+import useThemeStore from './useThemeStore';
 
 // --- Data ---
 
@@ -378,13 +382,13 @@ const Hero = () => {
   }, []);
 
   return (
-    <section
-      id="intro"
+    <section 
+      id="intro" 
       ref={targetRef}
       className="relative min-h-[90vh] flex items-center px-4 md:px-12 py-24 md:py-32 overflow-hidden"
     >
       <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
-        <motion.div
+        <motion.div 
           style={{ opacity }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -395,17 +399,17 @@ const Hero = () => {
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             System Status: Operational
           </div>
-
+          
           <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl leading-[0.9] tracking-tight text-foreground break-words">
             <span className="text-primary ">KUNAL RAI </span>
             FULLSTACK <br />
             DEVELOPER <br />
           </h1>
-
+          
           <p className="text-lg md:text-2xl font-sans font-bold text-foreground/70 max-w-2xl min-h-[3.5em] leading-relaxed">
             {displayText}<span className="animate-pulse">|</span>
           </p>
-
+          
           <div className="flex flex-wrap gap-4 md:gap-6 pt-4 md:pt-8">
             <a href="#contact" className="flex-1 sm:flex-none justify-center bg-primary text-white px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all active:scale-95 hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1 text-center">
               Initiate Sequence <ArrowRight size={18} />
@@ -416,9 +420,9 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, x: 20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="lg:col-span-5 relative mt-10 lg:mt-0"
         >
@@ -452,6 +456,7 @@ const Hero = () => {
             </div>
           </div>
 
+          {/* Floating Data Point */}
           <div className="absolute -bottom-6 -left-6 bg-background glass-panel px-6 py-4 border-2 border-foreground z-20 hidden lg:block">
             <div className="text-[10px] font-mono text-foreground/40">LATENCY</div>
             <div className="text-2xl font-bold font-mono tracking-tighter text-primary">12ms</div>
@@ -983,8 +988,18 @@ const Footer = () => (
 );
 
 export default function PortfolioExperience() {
-  const [darkMode, setDarkMode] = useState(true);
+  const store = useThemeStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const darkMode = mounted ? store.darkMode : false;
+  const toggleDarkMode = store.toggleDarkMode;
+
   const [activeSection, setActiveSection] = useState('intro');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1013,22 +1028,36 @@ export default function PortfolioExperience() {
   }, [darkMode]);
 
   return (
-    <div className="min-h-screen bg-background selection-primary relative">
-      <div className="fixed inset-0 bg-grid opacity-80 pointer-events-none -z-10" />
-      <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} activeSection={activeSection} />
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500 selection-primary relative">
+      <CustomCursor />
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <LoadingScreen key="loader" onComplete={() => setIsLoading(false)} />
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <PlexusBackground />
+            <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} activeSection={activeSection} />
 
-      <main className="relative z-0">
-        <Hero />
-        <Stats />
-        <Projects />
-        <Codolio darkMode={darkMode} />
-        <SkillsMarquee />
-        <Education />
-        <Posts />
-        <Contact />
-      </main>
+            <main className="relative z-0">
+              <Hero />
+              <Stats />
+              <Projects />
+              <Codolio darkMode={darkMode} />
+              <SkillsMarquee />
+              <Education />
+              <Posts />
+              <Contact />
+            </main>
 
-      <Footer />
+            <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

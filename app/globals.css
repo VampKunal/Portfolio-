@@ -15,13 +15,13 @@
   :root {
     --background: #FDFCFB;
     --foreground: #111111;
-    --grid-line: rgba(17, 17, 17, 0.08);
+    --grid-line: #E0E7FF;
   }
 
   .dark {
     --background: #0A0A0A;
     --foreground: #F5F5F5;
-    --grid-line: rgba(255, 255, 255, 0.08);
+    --grid-line: #1F2937;
   }
 
   html {
@@ -44,10 +44,8 @@
   .bg-grid {
     background-image: 
       linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px),
-      linear-gradient(to right, var(--grid-line) 0.5px, transparent 0.5px),
-      linear-gradient(to bottom, var(--grid-line) 0.5px, transparent 0.5px);
-    background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px;
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
   
   .bg-grid-sm {
@@ -108,4 +106,11 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
+}
+
+/* Hide default cursor on devices with mouse/fine pointer to use premium custom cursor exclusively */
+@media (pointer: fine) {
+  html, body, a, button, input, textarea, select, [role="button"], .cursor-pointer, * {
+    cursor: none !important;
+  }
 }
