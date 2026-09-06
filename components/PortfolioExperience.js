@@ -45,12 +45,12 @@ const projects = [
     stack: ["MERN", "Socket.IO", "Redis", "Microservices", "Docker", "Mongoose,RabbitMQ"]
   },
   {
-    title: "EKLAVYA",
+    title: "EKLAVYA-V2",
     category: "AI Tutor // 02",
     desc: "AI Tutor for students and professionals",
     metric: "v2.0-core",
     image: "/image.png",
-    href: "https://github.com/VampKunal/EKLAVYA",
+    href: "https://github.com/VampKunal/EKLAVYA-V2",
     stack: ["TypeScript", "OpenAI API", "Node.js, Supabase", "shadcnUI", "Mongoose"]
   },
   {
@@ -79,6 +79,24 @@ const projects = [
     image: "/image.png",
     href: "https://github.com/VampKunal/WallSmart1",
     stack: ["nextjs , huggingface , openaiAPI , mongoose"]
+  },
+  {
+    title: "Job-Finder-Discord",
+    category: "Bot Service // 06",
+    desc: "An automated Discord bot that searches, filters, and notifies users about job opportunities in real-time.",
+    metric: "Real-Time",
+    image: "/image.png",
+    href: "https://github.com/VampKunal/Job-Finder-Discord",
+    stack: ["Node.js", "Discord.js", "Python", "Web Scraping", "REST API"]
+  },
+  {
+    title: "PII-REDACTION-TOOL",
+    category: "Security Tool // 07",
+    desc: "A high-performance security tool for detecting, masking, and redacting sensitive personally identifiable information (PII).",
+    metric: "Privacy-Core",
+    image: "/image.png",
+    href: "https://github.com/VampKunal/PII-REDACTION-TOOL",
+    stack: ["Python", "Regex", "NLP", "FastAPI", "Security"]
   }
 ];
 
@@ -106,8 +124,19 @@ const education = [
   }
 ];
 
-const skills = [
-  "Next.js", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "PostgreSQL", "Redis", "RabbitMQ", "TypeScript", "Python", "C++", "TailwindCSS", "Docker", "Git", "OpenAI API"
+const fullstackSkills = [
+  "C++", "Python", "JavaScript", "TypeScript",
+  "HTML5", "CSS3", "React", "Next.js", "Tailwind CSS", "Zustand", "React Query",
+  "Node.js", "Express.js", "REST API Design", "NestJS", "FastAPI", "WebSockets (Socket.IO)",
+  "MongoDB", "PostgreSQL", "Redis"
+];
+
+const aiSystemSkills = [
+  "LangChain", "LangGraph", "RAG", "Prompt Engineering",
+  "Vector Embeddings", "Qdrant", "pgvector", "OpenAI API",
+  "AI Agents", "System Design",
+  "Microservices", "Distributed Systems", "Event-Driven Architecture",
+  "Scalable Infra", "System Security"
 ];
 
 const posts = [
@@ -382,13 +411,13 @@ const Hero = () => {
   }, []);
 
   return (
-    <section 
-      id="intro" 
+    <section
+      id="intro"
       ref={targetRef}
       className="relative min-h-[90vh] flex items-center px-4 md:px-12 py-24 md:py-32 overflow-hidden"
     >
       <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
-        <motion.div 
+        <motion.div
           style={{ opacity }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -399,17 +428,17 @@ const Hero = () => {
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             System Status: Operational
           </div>
-          
+
           <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl leading-[0.9] tracking-tight text-foreground break-words">
             <span className="text-primary ">KUNAL RAI </span>
             FULLSTACK <br />
             DEVELOPER <br />
           </h1>
-          
+
           <p className="text-lg md:text-2xl font-sans font-bold text-foreground/70 max-w-2xl min-h-[3.5em] leading-relaxed">
             {displayText}<span className="animate-pulse">|</span>
           </p>
-          
+
           <div className="flex flex-wrap gap-4 md:gap-6 pt-4 md:pt-8">
             <a href="#contact" className="flex-1 sm:flex-none justify-center bg-primary text-white px-8 md:px-10 py-4 md:py-5 font-mono text-[11px] md:text-[12px] uppercase tracking-widest flex items-center gap-3 transition-all active:scale-95 hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1 text-center">
               Initiate Sequence <ArrowRight size={18} />
@@ -420,7 +449,7 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -497,9 +526,9 @@ const Counter = ({ value, duration = 2 }) => {
 
 const Stats = () => {
   const stats = [
-    { value: 400, suffix: '+', label: 'Algorithms_Mastered' },
-    { value: 5, suffix: '', label: 'Production_Builds' },
-    { value: 8.08, suffix: '', label: 'Academic_Efficiency' },
+    { value: 500, suffix: '+', label: 'Algorithms_Mastered' },
+    { value: 10, suffix: '+', label: 'Production_Builds' },
+    { value: 8.13, suffix: '', label: 'Academic_Efficiency' },
   ];
 
   return (
@@ -541,7 +570,8 @@ const Projects = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           layout
-          className={`group relative overflow-hidden border border-grid-line shadow-xl aspect-video md:aspect-[16/10] ${showAll ? 'md:col-span-12' : 'md:col-span-8'}`}
+          onClick={() => window.open(projects[0].href, '_blank')}
+          className={`group relative overflow-hidden border border-grid-line shadow-xl aspect-video md:aspect-[16/10] cursor-pointer ${showAll ? 'md:col-span-12' : 'md:col-span-8'}`}
         >
           <img
             src="/image.png"
@@ -553,11 +583,23 @@ const Projects = () => {
             <h3 className="font-sans font-black text-2xl md:text-4xl text-background mb-4 uppercase">{projects[0].title}</h3>
             <p className="text-background/70 max-w-lg mb-6 md:mb-8 text-sm md:text-base leading-relaxed">{projects[0].desc}</p>
             <div className="flex gap-4">
-              <a href={projects[0].href} target="_blank" rel="noopener noreferrer" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+              <a
+                href={projects[0].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors"
+              >
                 View Source <ExternalIcon size={14} />
               </a>
               {projects[0].live && (
-                <a href={`https://${projects[0].live}`} target="_blank" rel="noopener noreferrer" className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors">
+                <a
+                  href={`https://${projects[0].live}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-fit flex items-center gap-2 text-background border-b border-background/30 pb-1 font-mono text-[10px] md:text-xs uppercase tracking-widest hover:text-primary hover:border-primary transition-colors"
+                >
                   Live Demo <Globe size={14} />
                 </a>
               )}
@@ -569,28 +611,31 @@ const Projects = () => {
         <div className={`${showAll ? 'md:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' : 'md:col-span-4 flex flex-col gap-8'}`}>
           <AnimatePresence mode="popLayout">
             {visibleProjects.slice(1).map((project, idx) => (
-              <motion.div
+              <motion.a
                 key={project.title}
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className={`${!showAll && idx === 0 ? 'flex-1 bg-primary border-2 border-foreground' : 'border border-grid-line glass-panel'} p-6 md:p-8 flex flex-col justify-between group cursor-pointer transition-all hover:translate-x-1 hover:translate-y-1 relative shadow-lg min-h-[220px] md:min-h-[200px]`}
+                className={`${!showAll && idx === 0 ? 'flex-1 bg-primary border-2 border-foreground' : 'border border-grid-line glass-panel'} p-6 md:p-8 flex flex-col justify-between group cursor-pointer transition-all hover:translate-x-1 hover:translate-y-1 relative shadow-lg min-h-[220px] md:min-h-[200px] block text-left no-underline`}
               >
-                <div className={`absolute top-4 right-4 ${!showAll && idx === 0 ? 'text-background/20' : 'text-foreground/10'} font-black font-mono text-4xl`}>0{idx + 2}</div>
+                <div className={`absolute top-4 right-4 ${!showAll && idx === 0 ? 'text-background/20' : 'text-foreground/10'} font-black font-mono text-4xl`}>{(idx + 2).toString().padStart(2, '0')}</div>
                 <div className="flex justify-between items-start">
                   <Layers size={40} className={!showAll && idx === 0 ? "text-white" : "text-primary"} />
-                  <a href={project.href} target="_blank" rel="noopener noreferrer">
+                  <div>
                     <ArrowRight className={`${!showAll && idx === 0 ? 'text-background' : 'text-primary'} -rotate-45 group-hover:rotate-0 transition-transform`} />
-                  </a>
+                  </div>
                 </div>
                 <div>
                   <h3 className={`font-sans font-black text-xl md:text-2xl ${!showAll && idx === 0 ? 'text-background' : 'text-foreground'} uppercase leading-none`}>{project.title}</h3>
                   <p className={`${!showAll && idx === 0 ? 'text-background/80' : 'text-foreground/50'} font-mono text-[11px] mt-4 tracking-widest`}>{project.desc}</p>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </AnimatePresence>
         </div>
@@ -737,24 +782,53 @@ const Codolio = ({ darkMode }) => {
 
 const SkillsMarquee = () => {
   return (
-    <section id="skills" className="py-24 overflow-hidden bg-foreground text-background">
-      <div className="px-4 md:px-12 max-w-screen-2xl mx-auto mb-12">
+    <section id="skills" className="py-24 overflow-hidden bg-foreground text-background space-y-12">
+      <div className="px-4 md:px-12 max-w-screen-2xl mx-auto">
         <div className="flex items-center gap-4">
-          <div className="w-2 h-2 bg-primary"></div>
-          <h2 className="font-sans font-black text-3xl uppercase tracking-tighter italic">CORE_STK // CAPABILITIES</h2>
+          <div className="w-2.5 h-2.5 bg-primary"></div>
+          <h2 className="font-sans font-black text-3xl md:text-4xl uppercase tracking-tighter italic">
+            CORE_STK // CAPABILITIES
+          </h2>
         </div>
       </div>
 
-      <div className="marquee">
-        <div className="marquee-content pt-4 pb-4">
-          {skills.concat(skills).map((skill, idx) => (
-            <div key={idx} className="flex items-center gap-4 md:gap-8 shrink-0">
-              <span className="font-sans font-black text-5xl md:text-8xl opacity-20 hover:opacity-100 hover:text-primary transition-all duration-500 cursor-default uppercase">
-                {skill}
-              </span>
-              <div className="w-4 h-4 md:w-8 md:h-8 bg-primary/20 rotate-45 shrink-0" />
-            </div>
-          ))}
+      {/* Track 1: Fullstack & Databases (Right to Left) */}
+      <div className="space-y-3">
+        <div className="px-4 md:px-12 max-w-screen-2xl mx-auto flex items-center gap-3">
+          <span className="font-mono text-[10px] md:text-xs text-primary font-bold uppercase tracking-widest">[01] FULLSTACK & DATABASES</span>
+          <div className="h-px bg-background/15 flex-1"></div>
+        </div>
+        <div className="marquee">
+          <div className="marquee-content-slow pt-2 pb-2">
+            {fullstackSkills.concat(fullstackSkills).map((skill, idx) => (
+              <div key={idx} className="flex items-center gap-4 md:gap-8 shrink-0">
+                <span className="font-sans font-black text-4xl md:text-7xl opacity-25 hover:opacity-100 hover:text-primary transition-all duration-500 cursor-default uppercase">
+                  {skill}
+                </span>
+                <div className="w-3 h-3 md:w-5 md:h-5 bg-primary/30 rotate-45 shrink-0" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Track 2: AI & System Design (Left to Right) */}
+      <div className="space-y-3 pt-4">
+        <div className="px-4 md:px-12 max-w-screen-2xl mx-auto flex items-center gap-3">
+          <span className="font-mono text-[10px] md:text-xs text-primary font-bold uppercase tracking-widest">[02] AI & SYSTEM DESIGN</span>
+          <div className="h-px bg-background/15 flex-1"></div>
+        </div>
+        <div className="marquee">
+          <div className="marquee-content-reverse pt-2 pb-2">
+            {aiSystemSkills.concat(aiSystemSkills).map((skill, idx) => (
+              <div key={idx} className="flex items-center gap-4 md:gap-8 shrink-0">
+                <span className="font-sans font-black text-4xl md:text-7xl opacity-25 hover:opacity-100 hover:text-primary transition-all duration-500 cursor-default uppercase">
+                  {skill}
+                </span>
+                <div className="w-3 h-3 md:w-5 md:h-5 bg-primary/30 rotate-45 shrink-0" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

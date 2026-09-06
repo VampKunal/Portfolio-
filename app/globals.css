@@ -75,21 +75,39 @@
     gap: 2rem;
   }
 
-  .marquee-content {
+  .marquee-content-slow {
     flex-shrink: 0;
     display: flex;
     justify-content: space-around;
     gap: 2rem;
     min-width: 100%;
-    animation: scroll 30s linear infinite;
+    animation: scroll-left 65s linear infinite;
   }
 
-  @keyframes scroll {
-    from {
+  .marquee-content-reverse {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    min-width: 100%;
+    animation: scroll-right 65s linear infinite;
+  }
+
+  @keyframes scroll-left {
+    0% {
       transform: translateX(0);
     }
-    to {
-      transform: translateX(-100%);
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scroll-right {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
     }
   }
 }
